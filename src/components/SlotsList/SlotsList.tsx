@@ -1,4 +1,3 @@
-import React from "react";
 import { Slot as SlotModel } from "../../models/slot";
 import Slot from "../Slot/Slot";
 

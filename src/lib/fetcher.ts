@@ -13,22 +13,22 @@ class Fetcher {
   }
 
   // GET method
-  async get(url, params = {}) {
+  async get(url: string, params = {}) {
     return this.instance.get(url, { params });
   }
 
   // POST method
-  async post(url, data) {
+  async post(url: string, data: unknown) {
     return this.instance.post(url, data);
   }
 
   // PUT method
-  async put(url, data) {
+  async put(url: string, data: unknown) {
     return this.instance.put(url, data);
   }
 
   // DELETE method
-  async delete(url) {
+  async delete(url: string) {
     return this.instance.delete(url);
   }
 }

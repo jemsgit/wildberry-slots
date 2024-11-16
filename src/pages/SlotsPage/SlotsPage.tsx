@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { slotsAdapter } from "../../adapters/api-adapter";
 import { realTimeSlotsAdapter } from "../../adapters/real-time-adapter";
 import SlotsList from "../../components/SlotsList/SlotsList";
@@ -8,17 +8,17 @@ function SlotsPage() {
   const [slots, setSlots] = useState<Slot[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const handleDataUpdate = useCallback(
-    (type: string, update: any[] | object) => {
+    (type: string, update: Slot[] | Slot) => {
       if (type === "initial") {
-        setSlots(update as any[]);
+        setSlots(update as Slot[]);
         return;
       }
       if (type === "add") {
-        setSlots((slots) => [...slots, update]);
+        setSlots((slots) => [...slots, update as Slot]);
       }
       if (type === "update") {
         setSlots((slots) => {
-          const { id } = update;
+          const { id } = update as Slot;
           const updatedSlots = slots.slice();
           let currentSlot = updatedSlots.find((slot) => slot.id === id);
           if (!currentSlot) {
@@ -26,7 +26,7 @@ function SlotsPage() {
           }
           currentSlot = {
             ...currentSlot,
-            update,
+            ...update,
           };
           return updatedSlots;
         });
