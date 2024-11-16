@@ -1,0 +1,44 @@
+.ellapsed {
+  width: 300px;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+
+.container.containerDeleting {
+  transform: scale(1.2);
+}
+
+.container::before {
+  transform: scaleX(0);
+  transform-origin: bottom right;
+}
+
+.container.containerDeleting::before {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.container::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  inset: 0 0 0 0;
+  background: linear-gradient(20deg, #c2a920, #f40d0d);
+  z-index: -1;
+  transition: transform 0.6s ease;
+}
+
+.container span {
+  display: flex;
+  flex: 1;
+}
