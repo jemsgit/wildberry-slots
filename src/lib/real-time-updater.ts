@@ -1,5 +1,7 @@
 import { SlotUpdates } from "../models/slot";
 
+const wsUrl = import.meta.env.VITE_WS_BASE_URL;
+
 class RealTimeUpdater {
   socket: WebSocket | null;
   url: string;
@@ -73,6 +75,6 @@ class RealTimeUpdater {
   }
 }
 
-const updater = new RealTimeUpdater("ws://localhost:8080");
+const updater = new RealTimeUpdater(wsUrl);
 
 export default updater;
