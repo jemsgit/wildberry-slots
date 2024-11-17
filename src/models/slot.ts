@@ -1,10 +1,21 @@
 export type Slot = {
-  startTime: string;
-  endTime: string;
+  startTime?: Date;
+  endTime?: Date;
   score: number;
-  location: string;
+  boxType: string;
   name: string;
-  id: string;
+  id: number;
+};
+
+export type SlotDTO = {
+  date: string;
+  coefficient: number;
+  warehouseID: number;
+  warehouseName: string;
+  boxTypeName: string;
+  boxTypeID: number;
+  openedAt?: string;
+  closedAt?: string;
 };
 
 type UpdateType = "initial" | "add" | "update";

@@ -1,16 +1,97 @@
 import WebSocket, { WebSocketServer } from "ws";
 
 // Изначальный массив данных
-let slots = [
-  { startTime: new Date(), score: 2, name: "222", location: "Тула", id: 1 },
-  { startTime: new Date(), score: -1, name: "3333", location: "Тула2", id: 2 },
-  { startTime: new Date(), score: 30, name: "4444", location: "Тула3", id: 3 },
-  { startTime: new Date(), score: 4, name: "1111", location: "Тула4", id: 4 },
-  { startTime: new Date(), score: 5, name: "5555", location: "Тула5", id: 5 },
-  { startTime: new Date(), score: 2, name: "6666", location: "Тула6", id: 6 },
-  { startTime: new Date(), score: 1, name: "7777", location: "Тула", id: 7 },
-  { startTime: new Date(), score: 0, name: "88888", location: "Тула", id: 8 },
-  { startTime: new Date(), score: 2, name: "9999", location: "Тула", id: 9 },
+const slots = [
+  {
+    date: "2024-11-17T00:00:00Z",
+    coefficient: 6,
+    warehouseID: 507,
+    warehouseName: "Коледино5",
+    boxTypeName: "Короба",
+    boxTypeID: 2,
+    openedAt: "2024-11-17T12:31:24.963814+03:00",
+  },
+  {
+    date: "2024-11-17T00:00:00Z",
+    coefficient: 7,
+    warehouseID: 508,
+    warehouseName: "Склад-508",
+    boxTypeName: "Ящик",
+    boxTypeID: 3,
+    openedAt: "2024-11-17T12:32:24.963814+03:00",
+  },
+  {
+    date: "2024-11-17T00:00:00Z",
+    coefficient: 8,
+    warehouseID: 509,
+    warehouseName: "Коледино3",
+    boxTypeName: "Короба",
+    boxTypeID: 2,
+    openedAt: "2024-11-17T12:33:24.963814+03:00",
+  },
+  {
+    date: "2024-11-17T00:00:00Z",
+    coefficient: 9,
+    warehouseID: 510,
+    warehouseName: "Склад-510",
+    boxTypeName: "Ящик",
+    boxTypeID: 3,
+    openedAt: "2024-11-17T12:34:24.963814+03:00",
+  },
+  {
+    date: "2024-11-17T00:00:00Z",
+    coefficient: 10,
+    warehouseID: 511,
+    warehouseName: "Коледино1",
+    boxTypeName: "Короба",
+    boxTypeID: 2,
+    openedAt: "2024-11-17T12:35:24.963814+03:00",
+  },
+  {
+    date: "2024-11-17T00:00:00Z",
+    coefficient: 11,
+    warehouseID: 512,
+    warehouseName: "Склад-512",
+    boxTypeName: "Ящик",
+    boxTypeID: 3,
+    openedAt: "2024-11-17T12:36:24.963814+03:00",
+  },
+  {
+    date: "2024-11-17T00:00:00Z",
+    coefficient: 12,
+    warehouseID: 513,
+    warehouseName: "Коледино13",
+    boxTypeName: "Короба",
+    boxTypeID: 2,
+    openedAt: "2024-11-17T12:37:24.963814+03:00",
+  },
+  {
+    date: "2024-11-17T00:00:00Z",
+    coefficient: 13,
+    warehouseID: 514,
+    warehouseName: "Склад-514",
+    boxTypeName: "Ящик",
+    boxTypeID: 3,
+    openedAt: "2024-11-17T12:38:24.963814+03:00",
+  },
+  {
+    date: "2024-11-17T00:00:00Z",
+    coefficient: 14,
+    warehouseID: 515,
+    warehouseName: "Коледино15",
+    boxTypeName: "Короба",
+    boxTypeID: 2,
+    openedAt: "2024-11-17T12:39:24.963814+03:00",
+  },
+  {
+    date: "2024-11-17T00:00:00Z",
+    coefficient: 15,
+    warehouseID: 516,
+    warehouseName: "Склад-516",
+    boxTypeName: "Ящик",
+    boxTypeID: 3,
+    openedAt: "2024-11-17T12:40:24.963814+03:00",
+  },
 ];
 
 // Инициализация WebSocket сервера
@@ -33,7 +114,7 @@ wss.on("connection", (ws) => {
 
 // Функция для случайного изменения данных
 function updateSlots() {
-  const shouldAddNew = Math.random() > 0.9; // С 30% вероятностью добавляем новый элемент
+  const shouldAddNew = false; // С 30% вероятностью добавляем новый элемент
 
   if (shouldAddNew) {
     // Добавляем новый элемент
@@ -49,7 +130,7 @@ function updateSlots() {
   } else {
     // Изменяем score случайного элемента
     const randomIndex = Math.floor(Math.random() * slots.length);
-    slots[randomIndex].score += Math.floor(Math.random() * 10) - 5; // Изменение на число от -5 до 5
+    slots[randomIndex].coefficient += Math.floor(Math.random() * 10) - 5; // Изменение на число от -5 до 5
     broadcast({ type: "update", data: slots[randomIndex] });
   }
 }
