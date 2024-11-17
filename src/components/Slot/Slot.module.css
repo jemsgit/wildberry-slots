@@ -8,6 +8,9 @@
   justify-content: space-between;
   position: relative;
   z-index: 2;
+  padding: 4px 12px;
+  border-bottom: 1px #7a7a7a solid;
+  box-sizing: border-box;
 }
 
 .container.containerDeleting {
