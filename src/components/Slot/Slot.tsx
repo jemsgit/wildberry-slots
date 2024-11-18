@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./Slot.module.css";
 
-import sound from "./explode.mp3";
+import sound from "./fire.mp3";
 
 const audio = new Audio(sound);
 
