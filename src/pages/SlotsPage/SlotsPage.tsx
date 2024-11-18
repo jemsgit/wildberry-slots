@@ -4,11 +4,25 @@ import { realTimeSlotsAdapter } from "../../adapters/real-time-adapter";
 import SlotsList from "../../components/SlotsList/SlotsList";
 import { Slot } from "../../models/slot";
 import Filter from "../../components/Filter/Filter";
+import { Filter as FilterModel } from "../../models/filter";
+
+const filterSlots = (filter: FilterModel[], slots: Slot[]): Slot[] => {
+  const filteredByClose = slots.filter((slot) => !slot.closed);
+  if (!filter || !filter.length) {
+    return filteredByClose;
+  }
+
+  const filterNames = filter.map((item) => item.name);
+
+  return filteredByClose.filter((slot) => filterNames.includes(slot.name));
+};
 
 function SlotsPage() {
   const [slots, setSlots] = useState<Slot[]>([]);
+  const [visibleSlots, setVisibleSlots] = useState<Slot[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [filter, setFilter] = useState<string[]>([]);
+  const [filter, setFilter] = useState<FilterModel[]>([]);
+
   const handleDataUpdate = useCallback(
     (type: string, update: Slot[] | Slot) => {
       if (type === "initial") {
@@ -36,7 +50,7 @@ function SlotsPage() {
         });
       }
     },
-    []
+    [filter]
   );
 
   useEffect(() => {
@@ -57,6 +71,10 @@ function SlotsPage() {
     };
   }, []);
 
+  useEffect(() => {
+    setVisibleSlots(filterSlots(filter, slots));
+  }, [slots, filter]);
+
   const onDelete = useCallback((id: number) => {
     setSlots((slots) => {
       const newSlots = slots.filter((slot) => slot.id !== id);
@@ -67,10 +85,7 @@ function SlotsPage() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  const visibleSlots =
-    filter && filter.length
-      ? slots.filter((slot) => filter.includes(slot.name))
-      : slots;
+
   return (
     <div>
       <div>

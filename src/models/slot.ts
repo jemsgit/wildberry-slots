@@ -5,6 +5,7 @@ export type Slot = {
   boxType: string;
   name: string;
   id: number;
+  closed: boolean;
 };
 
 export type SlotDTO = {
