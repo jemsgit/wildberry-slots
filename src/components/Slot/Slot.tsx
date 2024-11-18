@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./Slot.module.css";
 
+import sound from "./explode.mp3";
+
+const audio = new Audio(sound);
+
 interface SlotProps {
   name: string;
   score: number;
@@ -41,6 +45,11 @@ function Slot(props: SlotProps) {
   useEffect(() => {
     if (endTime) {
       setTimeout(() => onDelete(id), 2000);
+      try {
+        audio.play();
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, [id, endTime]);
 

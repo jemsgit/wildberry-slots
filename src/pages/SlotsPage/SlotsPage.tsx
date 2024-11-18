@@ -77,7 +77,15 @@ function SlotsPage() {
 
   const onDelete = useCallback((id: number) => {
     setSlots((slots) => {
-      const newSlots = slots.filter((slot) => slot.id !== id);
+      const slotIndex = slots.findIndex((slot) => slot.id === id);
+      if (slotIndex < 0) {
+        return slots;
+      }
+      const newSlots = slots.slice();
+      newSlots[slotIndex] = {
+        ...newSlots[slotIndex],
+        closed: true,
+      };
       return newSlots;
     });
   }, []);
