@@ -4,7 +4,7 @@ import styles from "./SlotsList.module.css";
 
 interface SlotListProps {
   slots: SlotModel[];
-  onDelete: (id: number) => void;
+  onDelete: (id: number, boxType: number, date: string) => void;
 }
 
 function SlotsList(props: SlotListProps) {
@@ -22,18 +22,22 @@ function SlotsList(props: SlotListProps) {
         <span>Время открытия</span>
         <span className={styles.ellapsed}>Период доступности</span>
       </div>
-      {slots.map(({ name, id, boxType, score, startTime, endTime }) => (
-        <Slot
-          name={name}
-          boxType={boxType}
-          key={id}
-          score={score}
-          startTime={startTime}
-          endTime={endTime}
-          id={id}
-          onDelete={onDelete}
-        />
-      ))}
+      {slots.map(
+        ({ name, id, boxType, boxTypeId, score, startTime, endTime, date }) => (
+          <Slot
+            name={name}
+            boxType={boxType}
+            boxTypeId={boxTypeId}
+            key={`${id}-${boxTypeId}-${date}`}
+            score={score}
+            startTime={startTime}
+            endTime={endTime}
+            id={id}
+            date={date}
+            onDelete={onDelete}
+          />
+        )
+      )}
     </div>
   );
 }

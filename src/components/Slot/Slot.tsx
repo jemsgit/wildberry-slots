@@ -9,10 +9,12 @@ interface SlotProps {
   name: string;
   score: number;
   boxType: string;
+  boxTypeId: number;
   startTime?: Date;
   endTime?: Date;
   id: number;
-  onDelete: (id: number) => void;
+  date: string;
+  onDelete: (id: number, boxType: number, date: string) => void;
 }
 
 function getTime(date?: Date) {
@@ -23,9 +25,20 @@ function getTime(date?: Date) {
 }
 
 function Slot(props: SlotProps) {
-  const { name, score, boxType, startTime, endTime, id, onDelete } = props;
+  const {
+    name,
+    score,
+    boxType,
+    boxTypeId,
+    startTime,
+    endTime,
+    id,
+    date,
+    onDelete,
+  } = props;
   const timeOutRef = useRef<NodeJS.Timeout | null>(null);
   const [elapsedTime, setElapsedTime] = useState("0");
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     if (!endTime && startTime) {
@@ -44,20 +57,29 @@ function Slot(props: SlotProps) {
 
   useEffect(() => {
     if (endTime) {
-      setTimeout(() => onDelete(id), 2000);
+      setTimeout(() => onDelete(id, boxTypeId, date), 2000);
       try {
         audio.play();
       } catch (e) {
         console.log(e);
       }
     }
-  }, [id, endTime]);
+  }, [id, boxTypeId, date, endTime]);
 
   return (
     <div
       className={`${styles.container} ${
-        endTime ? styles.containerDeleting : ""
+        endTime || clicked ? styles.containerDeleting : ""
       }`}
+      onClick={() => {
+        setTimeout(() => onDelete(id, boxTypeId, date), 2000);
+        setClicked(true);
+        try {
+          audio.play();
+        } catch (e) {
+          console.log(e);
+        }
+      }}
     >
       <span>{name}</span>
       <span>{score}</span>

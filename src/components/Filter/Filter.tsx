@@ -81,7 +81,7 @@ function Filter(props: FilterProps) {
               sx={{ color: "white" }}
             />
           )}
-          sx={{ backgroundColor: "gray", color: "white" }}
+          sx={{ backgroundColor: "white", borderRadius: "4px" }}
         />
       </FormControl>
     </div>

@@ -14,7 +14,7 @@
 }
 
 .container.containerDeleting {
-  transform: scale(1.2);
+  transform: scale(1.05);
 }
 
 .container::before {
@@ -43,5 +43,11 @@
 
 .container span {
   display: flex;
-  flex: 1;
+  flex: 3;
+  text-align: left;
+}
+
+.container span:nth-child(2) {
+  flex: 2;
+  font-weight: 600;
 }

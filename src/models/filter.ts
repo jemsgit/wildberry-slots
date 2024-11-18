@@ -1,6 +1,6 @@
 export type FilterDTO = {
-  warehouseID: number;
-  warehouseName: string;
+  id: number;
+  name: string;
 };
 
 export type Filter = {

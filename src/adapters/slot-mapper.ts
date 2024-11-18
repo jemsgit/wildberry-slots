@@ -6,6 +6,8 @@ export const slotMapper = (item: SlotDTO): Slot => ({
   startTime: item.openedAt ? new Date(item.openedAt) : undefined,
   endTime: item.closedAt ? new Date(item.closedAt) : undefined,
   boxType: item.boxTypeName,
+  boxTypeId: item.boxTypeID,
   score: item.coefficient,
   closed: !!item.closedAt,
+  date: item.date,
 });

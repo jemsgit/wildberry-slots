@@ -11,5 +11,9 @@
 
 .header span {
   display: flex;
-  flex: 1;
+  flex: 3;
+}
+
+.header span:nth-child(2) {
+  flex: 2;
 }

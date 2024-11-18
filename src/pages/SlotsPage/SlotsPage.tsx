@@ -7,14 +7,16 @@ import Filter from "../../components/Filter/Filter";
 import { Filter as FilterModel } from "../../models/filter";
 
 const filterSlots = (filter: FilterModel[], slots: Slot[]): Slot[] => {
-  const filteredByClose = slots.filter((slot) => !slot.closed);
+  const filteredByClose = slots.filter(
+    (slot) => !slot.closed && slot.startTime
+  );
   if (!filter || !filter.length) {
     return filteredByClose;
   }
 
-  const filterNames = filter.map((item) => item.name);
+  const filterCodes = filter.map((item) => item.id);
 
-  return filteredByClose.filter((slot) => filterNames.includes(slot.name));
+  return filteredByClose.filter((slot) => filterCodes.includes(slot.id));
 };
 
 function SlotsPage() {
@@ -42,9 +44,16 @@ function SlotsPage() {
           if (currentSlotIndex < 0) {
             return slots;
           }
+          let addition = {};
+          if ((update as Slot).startTime && !(update as Slot).endTime) {
+            addition = {
+              closed: false,
+            };
+          }
           updatedSlots[currentSlotIndex] = {
             ...updatedSlots[currentSlotIndex],
             ...update,
+            ...addition,
           };
           return updatedSlots;
         });
@@ -75,20 +84,26 @@ function SlotsPage() {
     setVisibleSlots(filterSlots(filter, slots));
   }, [slots, filter]);
 
-  const onDelete = useCallback((id: number) => {
-    setSlots((slots) => {
-      const slotIndex = slots.findIndex((slot) => slot.id === id);
-      if (slotIndex < 0) {
-        return slots;
-      }
-      const newSlots = slots.slice();
-      newSlots[slotIndex] = {
-        ...newSlots[slotIndex],
-        closed: true,
-      };
-      return newSlots;
-    });
-  }, []);
+  const onDelete = useCallback(
+    (id: number, boxTypeId: number, date: string) => {
+      setSlots((slots) => {
+        const slotIndex = slots.findIndex(
+          (slot) =>
+            slot.id === id && slot.boxTypeId === boxTypeId && slot.date === date
+        );
+        if (slotIndex < 0) {
+          return slots;
+        }
+        const newSlots = slots.slice();
+        newSlots[slotIndex] = {
+          ...newSlots[slotIndex],
+          closed: true,
+        };
+        return newSlots;
+      });
+    },
+    []
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;

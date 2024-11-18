@@ -3,9 +3,11 @@ export type Slot = {
   endTime?: Date;
   score: number;
   boxType: string;
+  boxTypeId: number;
   name: string;
   id: number;
   closed: boolean;
+  date: string;
 };
 
 export type SlotDTO = {
