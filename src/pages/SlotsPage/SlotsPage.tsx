@@ -6,6 +6,13 @@ import { Slot } from "../../models/slot";
 import Filter from "../../components/Filter/Filter";
 import { Filter as FilterModel } from "../../models/filter";
 
+import sound from "../../sounds/fire.mp3";
+import WatchSlotForm from "../../components/WatchSlotForm/WatchSlotForm";
+import { SlotWatcher } from "../../models/slot-watcher";
+import { checkSlot, checkSlots } from "../../utils/check-slot";
+
+const audio = new Audio(sound);
+
 const filterSlots = (filter: FilterModel[], slots: Slot[]): Slot[] => {
   const filteredByClose = slots.filter(
     (slot) => !slot.closed && slot.startTime
@@ -23,7 +30,10 @@ function SlotsPage() {
   const [slots, setSlots] = useState<Slot[]>([]);
   const [visibleSlots, setVisibleSlots] = useState<Slot[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [filtersIsLoading, setFiltersIsLoading] = useState(false);
+  const [availableOptions, setAvailableOptions] = useState<FilterModel[]>([]);
   const [filter, setFilter] = useState<FilterModel[]>([]);
+  const [slotWatcher, setSlotWatcher] = useState<SlotWatcher | null>(null);
 
   const handleDataUpdate = useCallback(
     (type: string, update: Slot[] | Slot) => {
@@ -32,7 +42,7 @@ function SlotsPage() {
         return;
       }
       if (type === "add") {
-        setSlots((slots) => [...slots, update as Slot]);
+        setSlots((slots) => [update as Slot, ...slots]);
       }
       if (type === "update") {
         setSlots((slots) => {
@@ -59,8 +69,21 @@ function SlotsPage() {
         });
       }
     },
-    [filter]
+    []
   );
+
+  useEffect(() => {
+    slotsAdapter
+      .getSlotsFilters()
+      ?.then((res) => {
+        if (res) {
+          setAvailableOptions(res);
+        }
+      })
+      .finally(() => {
+        setFiltersIsLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -74,11 +97,42 @@ function SlotsPage() {
       .finally(() => {
         setIsLoading(false);
       });
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = realTimeSlotsAdapter.subscribe(handleDataUpdate);
     return () => {
       unsubscribe && unsubscribe();
     };
-  }, []);
+  }, [handleDataUpdate]);
+
+  const checkWatcher = useCallback(
+    (type: string, update: Slot[] | Slot) => {
+      if (!slotWatcher) {
+        return;
+      }
+      let found = false;
+      if (type === "initial") {
+        found = checkSlots(update as Slot[], slotWatcher);
+      } else if (type === "add") {
+        found = checkSlot(update as Slot, slotWatcher);
+      }
+      if (found) {
+        setSlotWatcher(null);
+      }
+    },
+    [slotWatcher]
+  );
+
+  useEffect(() => {
+    let unsubscribe = null;
+    if (slotWatcher) {
+      unsubscribe = realTimeSlotsAdapter.subscribe(checkWatcher);
+    }
+    return () => {
+      unsubscribe && unsubscribe();
+    };
+  }, [slotWatcher, checkWatcher]);
 
   useEffect(() => {
     setVisibleSlots(filterSlots(filter, slots));
@@ -86,21 +140,30 @@ function SlotsPage() {
 
   const onDelete = useCallback(
     (id: number, boxTypeId: number, date: string) => {
-      setSlots((slots) => {
-        const slotIndex = slots.findIndex(
-          (slot) =>
-            slot.id === id && slot.boxTypeId === boxTypeId && slot.date === date
-        );
-        if (slotIndex < 0) {
-          return slots;
-        }
-        const newSlots = slots.slice();
-        newSlots[slotIndex] = {
-          ...newSlots[slotIndex],
-          closed: true,
-        };
-        return newSlots;
-      });
+      try {
+        audio.play();
+      } catch (e) {
+        console.log(e);
+      }
+      setTimeout(() => {
+        setSlots((slots) => {
+          const slotIndex = slots.findIndex(
+            (slot) =>
+              slot.id === id &&
+              slot.boxTypeId === boxTypeId &&
+              slot.date === date
+          );
+          if (slotIndex < 0) {
+            return slots;
+          }
+          const newSlots = slots.slice();
+          newSlots[slotIndex] = {
+            ...newSlots[slotIndex],
+            closed: true,
+          };
+          return newSlots;
+        });
+      }, 1000);
     },
     []
   );
@@ -111,8 +174,20 @@ function SlotsPage() {
 
   return (
     <div>
+      <WatchSlotForm
+        warehousesOptions={availableOptions}
+        onSubscibe={(val) => {
+          setSlotWatcher(val);
+        }}
+        watcher={slotWatcher}
+      />
       <div>
-        <Filter value={filter} onChange={setFilter} />
+        <Filter
+          value={filter}
+          onChange={setFilter}
+          availableOptions={availableOptions}
+          isLoading={filtersIsLoading}
+        />
       </div>
       <SlotsList slots={visibleSlots} onDelete={onDelete} />
     </div>

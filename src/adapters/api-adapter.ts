@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import fetcher from "../lib/fetcher";
 import { Slot } from "../models/slot";
 import { slotMapper } from "./slot-mapper";

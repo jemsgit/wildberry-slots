@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./Slot.module.css";
 
-import sound from "./fire.mp3";
-
-const audio = new Audio(sound);
-
 interface SlotProps {
   name: string;
   score: number;
@@ -41,6 +37,7 @@ function Slot(props: SlotProps) {
   const timeOutRef = useRef<NodeJS.Timeout | null>(null);
   const [elapsedTime, setElapsedTime] = useState("0");
   const [clicked, setClicked] = useState(false);
+  const [isNew, setIsNew] = useState(false);
 
   useEffect(() => {
     if (!endTime && startTime) {
@@ -59,29 +56,29 @@ function Slot(props: SlotProps) {
 
   useEffect(() => {
     if (endTime) {
-      setTimeout(() => onDelete(id, boxTypeId, date), 1000);
-      try {
-        audio.play();
-      } catch (e) {
-        console.log(e);
-      }
+      onDelete(id, boxTypeId, date);
     }
   }, [id, boxTypeId, date, endTime]);
+
+  useEffect(() => {
+    if (startTime) {
+      const start = startTime.getTime();
+      if ((Date.now() - start) / 1000 < 10) {
+        setIsNew(true);
+        setTimeout(() => setIsNew(false), 2000);
+      }
+    }
+  }, [startTime]);
 
   return (
     <div
       className={`${styles.container} ${isEven ? styles.even : ""} ${
         endTime || clicked ? styles.containerDeleting : ""
-      }`}
+      } ${isNew ? styles.new : ""}`}
       onClick={() => {
-        // delete onclick
-        setTimeout(() => onDelete(id, boxTypeId, date), 1000);
         setClicked(true);
-        try {
-          audio.play();
-        } catch (e) {
-          console.log(e);
-        }
+        // delete onclick
+        onDelete(id, boxTypeId, date);
       }}
     >
       <span>{name}</span>

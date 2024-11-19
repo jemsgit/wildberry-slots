@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { slotsAdapter } from "../../adapters/api-adapter";
 import { Filter as FilterModel } from "../../models/filter";
 import {
   Autocomplete,
@@ -11,19 +9,25 @@ import {
 import ClearIcon from "@mui/icons-material/Clear";
 import {
   autocompleteStyles,
+  containerStyles,
   controlStyles,
   textFieldStyles,
 } from "./Filter.styles";
 
 interface FilterProps {
   value: FilterModel[];
+  availableOptions: FilterModel[];
+  isLoading: boolean;
   onChange: (val: FilterModel[]) => void;
 }
 
 function Filter(props: FilterProps) {
-  const { value: filterValue, onChange } = props;
-  const [isLoading, setIsLoading] = useState(true);
-  const [availableOptions, setAvailableOptions] = useState<FilterModel[]>([]);
+  const {
+    value: filterValue,
+    onChange,
+    isLoading,
+    availableOptions = [],
+  } = props;
   const handleDelete = (itemToDelete: FilterModel) => {
     onChange(filterValue.filter((item) => item.name !== itemToDelete.name));
   };
@@ -32,23 +36,11 @@ function Filter(props: FilterProps) {
     onChange(value);
   };
 
-  useEffect(() => {
-    slotsAdapter
-      .getSlotsFilters()
-      ?.then((res) => {
-        if (res) {
-          setAvailableOptions(res);
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
   if (isLoading) {
     return <div>Filters are loading...</div>;
   }
   return (
-    <div>
+    <div style={containerStyles}>
       <FormControl sx={controlStyles}>
         <Autocomplete
           multiple

@@ -18,7 +18,7 @@ function SlotsList(props: SlotListProps) {
       <div className={styles.header}>
         <span>Название</span>
         <span>Дата</span>
-        <span>Доступность</span>
+        <span>Коэффициент</span>
         <span>Тип поставки</span>
         <span>Время открытия</span>
         <span className={styles.ellapsed}>Период доступности</span>

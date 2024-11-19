@@ -19,8 +19,13 @@
   background: #352931e8;
 }
 
-.container.containerDeleting {
+.container.containerDeleting,
+.container.new {
   transform: scale(1.05);
+}
+
+.container.new::before {
+  background: linear-gradient(20deg, #a28804, #039d58);
 }
 
 .container::before {
@@ -28,7 +33,8 @@
   transform-origin: bottom right;
 }
 
-.container.containerDeleting::before {
+.container.containerDeleting::before,
+.container.new::before {
   transform: scaleX(1);
   transform-origin: bottom left;
 }

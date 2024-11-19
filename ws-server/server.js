@@ -114,15 +114,16 @@ wss.on("connection", (ws) => {
 
 // Функция для случайного изменения данных
 function updateSlots() {
-  const shouldAddNew = false; // С 30% вероятностью добавляем новый элемент
+  const shouldAddNew = true; // С 30% вероятностью добавляем новый элемент
 
   if (shouldAddNew) {
     // Добавляем новый элемент
     const newSlot = {
-      startTime: new Date(),
+      startTime: new Date().toLocaleDateString(),
       score: Math.floor(Math.random() * 100) - 50, // Случайное число от -50 до 50
       name: `New Name ${Math.random().toString(36).substring(7)}`,
       location: `Location ${Math.random().toString(36).substring(7)}`,
+      date: new Date().toLocaleDateString(),
       id: slots.length + 1,
     };
     slots.push(newSlot);

@@ -15,3 +15,7 @@ export const textFieldStyles = {
   color: "white",
   label: { borderRadius: "10px", pl: "5px", pr: "5px", background: "#ffffff" },
 };
+
+export const containerStyles = {
+  marginBottom: "16px",
+};
