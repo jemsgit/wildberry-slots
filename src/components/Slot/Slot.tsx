@@ -57,7 +57,7 @@ function Slot(props: SlotProps) {
 
   useEffect(() => {
     if (endTime) {
-      setTimeout(() => onDelete(id, boxTypeId, date), 2000);
+      setTimeout(() => onDelete(id, boxTypeId, date), 1000);
       try {
         audio.play();
       } catch (e) {
@@ -72,7 +72,8 @@ function Slot(props: SlotProps) {
         endTime || clicked ? styles.containerDeleting : ""
       }`}
       onClick={() => {
-        setTimeout(() => onDelete(id, boxTypeId, date), 2000);
+        // delete onclick
+        setTimeout(() => onDelete(id, boxTypeId, date), 1000);
         setClicked(true);
         try {
           audio.play();
@@ -82,6 +83,7 @@ function Slot(props: SlotProps) {
       }}
     >
       <span>{name}</span>
+      <span>{date}</span>
       <span>{score}</span>
       <span>{boxType}</span>
       <span>{getTime(startTime)}</span>

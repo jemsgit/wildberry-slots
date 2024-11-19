@@ -9,6 +9,11 @@ import {
   TextField,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import {
+  autocompleteStyles,
+  controlStyles,
+  textFieldStyles,
+} from "./Filter.styles";
 
 interface FilterProps {
   value: FilterModel[];
@@ -44,9 +49,7 @@ function Filter(props: FilterProps) {
   }
   return (
     <div>
-      <FormControl
-        sx={{ m: 1, width: "100%", color: "white", margin: 0, mb: 1 }}
-      >
+      <FormControl sx={controlStyles}>
         <Autocomplete
           multiple
           id="tags-outlined"
@@ -78,10 +81,10 @@ function Filter(props: FilterProps) {
               {...params}
               label="Склады"
               placeholder="Имя склада"
-              sx={{ color: "white" }}
+              sx={textFieldStyles}
             />
           )}
-          sx={{ backgroundColor: "white", borderRadius: "4px" }}
+          sx={autocompleteStyles}
         />
       </FormControl>
     </div>

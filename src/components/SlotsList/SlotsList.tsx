@@ -17,6 +17,7 @@ function SlotsList(props: SlotListProps) {
     <div>
       <div className={styles.header}>
         <span>Название</span>
+        <span>Дата</span>
         <span>Доступность</span>
         <span>Тип поставки</span>
         <span>Время открытия</span>

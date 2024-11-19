@@ -3,11 +3,13 @@ import { Slot, SlotDTO } from "../models/slot";
 export const slotMapper = (item: SlotDTO): Slot => ({
   id: item.warehouseID,
   name: item.warehouseName,
-  startTime: item.openedAt ? new Date(item.openedAt) : undefined,
-  endTime: item.closedAt ? new Date(item.closedAt) : undefined,
+  startTime: item.openedAt
+    ? new Date(item.openedAt.replace("Z", ""))
+    : undefined,
+  endTime: item.closedAt ? new Date(item.closedAt.replace("Z", "")) : undefined,
   boxType: item.boxTypeName,
   boxTypeId: item.boxTypeID,
   score: item.coefficient,
   closed: !!item.closedAt,
-  date: item.date,
+  date: new Date(item.date.replace("Z", "")).toLocaleDateString(),
 });

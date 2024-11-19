@@ -47,7 +47,7 @@
   text-align: left;
 }
 
-.container span:nth-child(2) {
+.container span:nth-child(3) {
   flex: 2;
   font-weight: 600;
 }
