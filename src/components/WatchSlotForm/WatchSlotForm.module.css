@@ -25,4 +25,8 @@
     flex-direction: column;
     gap: 10px;
   }
+
+  .form {
+    flex-direction: column;
+  }
 }

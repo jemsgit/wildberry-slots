@@ -10,6 +10,7 @@ import sound from "../../sounds/fire.mp3";
 import WatchSlotForm from "../../components/WatchSlotForm/WatchSlotForm";
 import { SlotWatcher } from "../../models/slot-watcher";
 import { checkSlot, checkSlots } from "../../utils/check-slot";
+import Settings from "../../components/Settings/Settings";
 
 const audio = new Audio(sound);
 
@@ -34,6 +35,9 @@ function SlotsPage() {
   const [availableOptions, setAvailableOptions] = useState<FilterModel[]>([]);
   const [filter, setFilter] = useState<FilterModel[]>([]);
   const [slotWatcher, setSlotWatcher] = useState<SlotWatcher | null>(null);
+  const [autoopenLinkOn, setAutoopenLinkOn] = useState(true);
+  const [soundCloseOn, setSoundClose] = useState(true);
+  const [soundOpenOn, setSoundOpen] = useState(true);
 
   const handleDataUpdate = useCallback(
     (type: string, update: Slot[] | Slot) => {
@@ -113,15 +117,25 @@ function SlotsPage() {
       }
       let found = false;
       if (type === "initial") {
-        found = checkSlots(update as Slot[], slotWatcher);
+        found = checkSlots(
+          update as Slot[],
+          slotWatcher,
+          autoopenLinkOn,
+          soundOpenOn
+        );
       } else if (type === "add") {
-        found = checkSlot(update as Slot, slotWatcher);
+        found = checkSlot(
+          update as Slot,
+          slotWatcher,
+          autoopenLinkOn,
+          soundOpenOn
+        );
       }
       if (found) {
         setSlotWatcher(null);
       }
     },
-    [slotWatcher]
+    [slotWatcher, autoopenLinkOn, soundOpenOn]
   );
 
   useEffect(() => {
@@ -141,7 +155,7 @@ function SlotsPage() {
   const onDelete = useCallback(
     (id: number, boxTypeId: number, date: string) => {
       try {
-        audio.play();
+        soundCloseOn && audio.play();
       } catch (e) {
         console.log(e);
       }
@@ -165,7 +179,7 @@ function SlotsPage() {
         });
       }, 1000);
     },
-    []
+    [soundCloseOn]
   );
 
   if (isLoading) {
@@ -174,6 +188,14 @@ function SlotsPage() {
 
   return (
     <div>
+      <Settings
+        autoopenLinkOn={autoopenLinkOn}
+        soundCloseOn={soundCloseOn}
+        soundOpenOn={soundOpenOn}
+        setSoundClose={setSoundClose}
+        setSoundOpen={setSoundOpen}
+        setAutoopenLink={setAutoopenLinkOn}
+      />
       <WatchSlotForm
         warehousesOptions={availableOptions}
         onSubscibe={(val) => {
