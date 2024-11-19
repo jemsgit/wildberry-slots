@@ -24,7 +24,10 @@ function SlotsList(props: SlotListProps) {
         <span className={styles.ellapsed}>Период доступности</span>
       </div>
       {slots.map(
-        ({ name, id, boxType, boxTypeId, score, startTime, endTime, date }) => (
+        (
+          { name, id, boxType, boxTypeId, score, startTime, endTime, date },
+          index
+        ) => (
           <Slot
             name={name}
             boxType={boxType}
@@ -36,6 +39,7 @@ function SlotsList(props: SlotListProps) {
             id={id}
             date={date}
             onDelete={onDelete}
+            isEven={index % 2 === 0}
           />
         )
       )}

@@ -14,6 +14,7 @@ interface SlotProps {
   endTime?: Date;
   id: number;
   date: string;
+  isEven: boolean;
   onDelete: (id: number, boxType: number, date: string) => void;
 }
 
@@ -34,6 +35,7 @@ function Slot(props: SlotProps) {
     endTime,
     id,
     date,
+    isEven,
     onDelete,
   } = props;
   const timeOutRef = useRef<NodeJS.Timeout | null>(null);
@@ -68,7 +70,7 @@ function Slot(props: SlotProps) {
 
   return (
     <div
-      className={`${styles.container} ${
+      className={`${styles.container} ${isEven ? styles.even : ""} ${
         endTime || clicked ? styles.containerDeleting : ""
       }`}
       onClick={() => {

@@ -9,10 +9,14 @@
   position: relative;
   z-index: 2;
   padding: 4px 12px;
-  border-bottom: 1px #7a7a7a solid;
+  border-bottom: 1px #4a4a4a solid;
   box-sizing: border-box;
   flex-wrap: wrap;
   align-items: flex-start;
+}
+
+.even {
+  background: #352931e8;
 }
 
 .container.containerDeleting {
