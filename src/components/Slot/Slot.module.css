@@ -11,6 +11,8 @@
   padding: 4px 12px;
   border-bottom: 1px #7a7a7a solid;
   box-sizing: border-box;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .container.containerDeleting {
@@ -45,9 +47,22 @@
   display: flex;
   flex: 3;
   text-align: left;
+  padding: 2px 3px;
 }
 
+.container span:nth-child(2),
 .container span:nth-child(3) {
   flex: 2;
   font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .container span:last-child {
+    background: #005c80;
+    border-radius: 5px;
+  }
 }

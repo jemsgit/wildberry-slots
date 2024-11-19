@@ -4,6 +4,7 @@
   margin: 0 auto;
   padding: 2em;
   text-align: center;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -23,6 +24,12 @@ h1 {
 @media (max-width: 720px) {
   #root {
     padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #root {
+    padding: 0.5rem;
   }
 }
 
