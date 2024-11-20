@@ -48,10 +48,13 @@ function SlotsPage() {
       }
       if (type === "update") {
         setSlots((slots) => {
-          const { id } = update as Slot;
+          const { id, boxTypeId, date } = update as Slot;
           const updatedSlots = slots.slice();
           let currentSlotIndex = updatedSlots.findIndex(
-            (slot) => slot.id === id
+            (slot) =>
+              slot.id === id &&
+              slot.boxTypeId === boxTypeId &&
+              slot.date === date
           );
           if (currentSlotIndex < 0) {
             return [update as Slot, ...slots];
