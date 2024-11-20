@@ -45,9 +45,6 @@ function SlotsPage() {
         setSlots(update as Slot[]);
         return;
       }
-      if (type === "add") {
-        setSlots((slots) => [update as Slot, ...slots]);
-      }
       if (type === "update") {
         setSlots((slots) => {
           const { id } = update as Slot;
@@ -56,7 +53,7 @@ function SlotsPage() {
             (slot) => slot.id === id
           );
           if (currentSlotIndex < 0) {
-            return slots;
+            return [update as Slot, ...slots];
           }
           let addition = {};
           if ((update as Slot).startTime && !(update as Slot).endTime) {
@@ -123,7 +120,7 @@ function SlotsPage() {
           autoopenLinkOn,
           soundOpenOn
         );
-      } else if (type === "add") {
+      } else if (type === "update") {
         found = checkSlot(
           update as Slot,
           slotWatcher,
