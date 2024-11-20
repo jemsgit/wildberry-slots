@@ -24,6 +24,7 @@ export const realTimeSlotsAdapter = {
         console.log(new Date());
         let { warehouseID, boxTypeID, date } = data as SlotDTO;
         console.log(`${warehouseID} ${boxTypeID} ${date}`);
+        console.log(data);
         return;
       }
     });
