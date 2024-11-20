@@ -49,7 +49,6 @@ function SlotsPage() {
       if (type === "update") {
         setSlots((slots) => {
           const { id } = update as Slot;
-          console.log("update", update);
           const updatedSlots = slots.slice();
           let currentSlotIndex = updatedSlots.findIndex(
             (slot) => slot.id === id
