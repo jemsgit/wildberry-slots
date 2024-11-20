@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { slotsAdapter } from "../../adapters/api-adapter";
 import { realTimeSlotsAdapter } from "../../adapters/real-time-adapter";
 import SlotsList from "../../components/SlotsList/SlotsList";
@@ -9,7 +9,12 @@ import { Filter as FilterModel } from "../../models/filter";
 import sound from "../../sounds/fire.mp3";
 import WatchSlotForm from "../../components/WatchSlotForm/WatchSlotForm";
 import { SlotWatcher } from "../../models/slot-watcher";
-import { checkSlot, checkSlots } from "../../utils/check-slot";
+import {
+  checkClosedSlot,
+  checkClosedSlots,
+  checkSlot,
+  checkSlots,
+} from "../../utils/check-slot";
 import Settings from "../../components/Settings/Settings";
 import WatcherList from "../../components/WatcherList/WatcherList";
 
@@ -39,6 +44,7 @@ function SlotsPage() {
   const [autoopenLinkOn, setAutoopenLinkOn] = useState(true);
   const [soundCloseOn, setSoundClose] = useState(true);
   const [soundOpenOn, setSoundOpen] = useState(true);
+  const delayedList = useRef<Record<string, SlotWatcher>>({});
 
   const handleDataUpdate = useCallback(
     (type: string, update: Slot[] | Slot) => {
@@ -116,7 +122,10 @@ function SlotsPage() {
       if (!slotWatchers) {
         return;
       }
+      let slotsToDelay: Record<string, SlotWatcher> = {};
+      let slotsToClearDelay: string[] = [];
       console.log(slotWatchers);
+      let delays = Object.keys(delayedList.current);
       let foundList: number[] = [];
       if (type === "initial") {
         slotWatchers.forEach((slotWatcher) => {
@@ -128,6 +137,16 @@ function SlotsPage() {
           );
           if (found) {
             foundList.push(slotWatcher.id);
+            if (found !== true) {
+              slotsToDelay[found.toString()] = slotWatcher;
+            }
+          }
+        });
+        delays.forEach((timeout) => {
+          const watcher = delayedList.current[timeout];
+          let found = checkClosedSlots(update as Slot[], watcher, timeout);
+          if (found) {
+            slotsToClearDelay.push(timeout);
           }
         });
       } else if (type === "update") {
@@ -140,11 +159,29 @@ function SlotsPage() {
           );
           if (found) {
             foundList.push(slotWatcher.id);
+            if (found !== true) {
+              slotsToDelay[found.toString()] = slotWatcher;
+            }
+          }
+        });
+        delays.forEach((timeout) => {
+          const watcher = delayedList.current[timeout];
+          let found = checkClosedSlot(update as Slot, watcher, +timeout);
+          if (found) {
+            slotsToClearDelay.push(timeout);
           }
         });
       }
+
+      if (slotsToClearDelay.length) {
+        slotsToClearDelay.forEach((del) => {
+          delete delayedList.current[del];
+        });
+      }
+
       if (foundList.length) {
-        console.log("ЗАматчились вотчеры");
+        console.log("matched watchers");
+        delayedList.current = { ...delayedList.current, ...slotsToDelay };
       }
     },
     [slotWatchers, autoopenLinkOn, soundOpenOn]

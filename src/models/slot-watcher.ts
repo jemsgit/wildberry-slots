@@ -4,4 +4,6 @@ export type SlotWatcher = Pick<Slot, "boxTypeId" | "boxType" | "name"> & {
   sell: string;
   warehouseId: number;
   id: number;
+  date?: string;
+  delay?: number;
 };
