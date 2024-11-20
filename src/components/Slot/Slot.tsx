@@ -36,7 +36,6 @@ function Slot(props: SlotProps) {
   } = props;
   const timeOutRef = useRef<NodeJS.Timeout | null>(null);
   const [elapsedTime, setElapsedTime] = useState("0");
-  const [clicked, setClicked] = useState(false);
   const [isNew, setIsNew] = useState(false);
 
   useEffect(() => {
@@ -73,13 +72,8 @@ function Slot(props: SlotProps) {
   return (
     <div
       className={`${styles.container} ${isEven ? styles.even : ""} ${
-        endTime || clicked ? styles.containerDeleting : ""
+        endTime ? styles.containerDeleting : ""
       } ${isNew ? styles.new : ""}`}
-      onClick={() => {
-        setClicked(true);
-        // delete onclick
-        onDelete(id, boxTypeId, date);
-      }}
     >
       <span>{name}</span>
       <span>{date}</span>
