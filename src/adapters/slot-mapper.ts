@@ -10,6 +10,5 @@ export const slotMapper = (item: SlotDTO): Slot => ({
   boxType: item.boxTypeName,
   boxTypeId: item.boxTypeID,
   score: item.coefficient || -1,
-  closed: !!item.closedAt,
   date: new Date(item.date.replace("Z", "")).toLocaleDateString(),
 });

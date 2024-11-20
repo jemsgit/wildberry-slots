@@ -6,7 +6,7 @@ export type Slot = {
   boxTypeId: number;
   name: string;
   id: number;
-  closed: boolean;
+  closed?: boolean;
   date: string;
 };
 
