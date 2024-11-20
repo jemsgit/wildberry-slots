@@ -142,9 +142,6 @@ function SlotsPage() {
       }
       if (foundList.length) {
         console.log("ЗАматчились вотчеры");
-        setSlotWatchers((watchers: SlotWatcher[]) =>
-          watchers.filter((watcher) => !foundList.includes(watcher.id))
-        );
       }
     },
     [slotWatchers, autoopenLinkOn, soundOpenOn]

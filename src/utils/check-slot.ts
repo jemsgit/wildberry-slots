@@ -4,8 +4,10 @@ import { SlotWatcher } from "../models/slot-watcher";
 import addSound from "../sounds/added.mp3";
 
 const audioAdded = new Audio(addSound);
+audioAdded.volume = 0.4;
 
-const wbPage = "https://wb.seller/postavka/";
+const wbPage =
+  "https://seller.wildberries.ru/supplies-management/new-supply/choose-date?preorderID=";
 
 export function checkSlots(
   slots: Slot[],
