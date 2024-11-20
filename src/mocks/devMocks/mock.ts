@@ -157,7 +157,7 @@ const slots = [
 export default function mocks() {
   return [
     {
-      url: "/api/acceptance",
+      url: "/api/acceptances",
       method: "get",
       timeout: 2000,
       response: slots,

@@ -119,15 +119,16 @@ function updateSlots() {
   if (shouldAddNew) {
     // Добавляем новый элемент
     const newSlot = {
-      startTime: new Date().toLocaleDateString(),
-      score: Math.floor(Math.random() * 100) - 50, // Случайное число от -50 до 50
-      name: `New Name ${Math.random().toString(36).substring(7)}`,
-      location: `Location ${Math.random().toString(36).substring(7)}`,
-      date: new Date().toLocaleDateString(),
-      id: slots.length + 1,
+      date: "2024-12-05T00:00:00Z",
+      coefficient: -1,
+      warehouseID: 218732,
+      warehouseName: "СЦ Ош",
+      boxTypeName: "QR-поставка с коробами",
+      boxTypeID: 0,
+      openedAt: "2024-11-19T00:00:21.675385Z",
     };
     slots.push(newSlot);
-    broadcast({ type: "add", data: newSlot });
+    broadcast({ type: "update", data: newSlot });
   } else {
     // Изменяем score случайного элемента
     const randomIndex = Math.floor(Math.random() * slots.length);

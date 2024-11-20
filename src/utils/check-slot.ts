@@ -17,7 +17,7 @@ export function checkSlots(
     const gotcha = slots.find(
       (item) =>
         item.boxTypeId === target.boxTypeId &&
-        item.id === target.id &&
+        item.id === target.warehouseId &&
         !item.endTime
     );
     if (gotcha) {
@@ -43,7 +43,7 @@ export function checkSlot(
   if (target) {
     const gotcha =
       slot.boxTypeId === target.boxTypeId &&
-      slot.id === target.id &&
+      slot.id === target.warehouseId &&
       !slot.endTime &&
       slot.startTime;
 
