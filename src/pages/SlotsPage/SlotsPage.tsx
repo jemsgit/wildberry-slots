@@ -11,6 +11,7 @@ import WatchSlotForm from "../../components/WatchSlotForm/WatchSlotForm";
 import { SlotWatcher } from "../../models/slot-watcher";
 import { checkSlot, checkSlots } from "../../utils/check-slot";
 import Settings from "../../components/Settings/Settings";
+import WatcherList from "../../components/WatcherList/WatcherList";
 
 const audio = new Audio(sound);
 
@@ -34,7 +35,7 @@ function SlotsPage() {
   const [filtersIsLoading, setFiltersIsLoading] = useState(false);
   const [availableOptions, setAvailableOptions] = useState<FilterModel[]>([]);
   const [filter, setFilter] = useState<FilterModel[]>([]);
-  const [slotWatcher, setSlotWatcher] = useState<SlotWatcher | null>(null);
+  const [slotWatchers, setSlotWatchers] = useState<SlotWatcher[]>([]);
   const [autoopenLinkOn, setAutoopenLinkOn] = useState(true);
   const [soundCloseOn, setSoundClose] = useState(true);
   const [soundOpenOn, setSoundOpen] = useState(true);
@@ -48,6 +49,7 @@ function SlotsPage() {
       if (type === "update") {
         setSlots((slots) => {
           const { id } = update as Slot;
+          console.log("update", update);
           const updatedSlots = slots.slice();
           let currentSlotIndex = updatedSlots.findIndex(
             (slot) => slot.id === id
@@ -109,41 +111,55 @@ function SlotsPage() {
 
   const checkWatcher = useCallback(
     (type: string, update: Slot[] | Slot) => {
-      if (!slotWatcher) {
+      if (!slotWatchers) {
         return;
       }
-      let found = false;
+      console.log(slotWatchers);
+      let foundList: number[] = [];
       if (type === "initial") {
-        found = checkSlots(
-          update as Slot[],
-          slotWatcher,
-          autoopenLinkOn,
-          soundOpenOn
-        );
+        slotWatchers.forEach((slotWatcher) => {
+          let found = checkSlots(
+            update as Slot[],
+            slotWatcher,
+            autoopenLinkOn,
+            soundOpenOn
+          );
+          if (found) {
+            foundList.push(slotWatcher.id);
+          }
+        });
       } else if (type === "update") {
-        found = checkSlot(
-          update as Slot,
-          slotWatcher,
-          autoopenLinkOn,
-          soundOpenOn
-        );
+        slotWatchers.forEach((slotWatcher) => {
+          let found = checkSlot(
+            update as Slot,
+            slotWatcher,
+            autoopenLinkOn,
+            soundOpenOn
+          );
+          if (found) {
+            foundList.push(slotWatcher.id);
+          }
+        });
       }
-      if (found) {
-        setSlotWatcher(null);
+      if (foundList.length) {
+        console.log("ЗАматчились вотчеры");
+        setSlotWatchers((watchers: SlotWatcher[]) =>
+          watchers.filter((watcher) => !foundList.includes(watcher.id))
+        );
       }
     },
-    [slotWatcher, autoopenLinkOn, soundOpenOn]
+    [slotWatchers, autoopenLinkOn, soundOpenOn]
   );
 
   useEffect(() => {
     let unsubscribe = null;
-    if (slotWatcher) {
+    if (slotWatchers.length) {
       unsubscribe = realTimeSlotsAdapter.subscribe(checkWatcher);
     }
     return () => {
       unsubscribe && unsubscribe();
     };
-  }, [slotWatcher, checkWatcher]);
+  }, [slotWatchers.length, checkWatcher]);
 
   useEffect(() => {
     setVisibleSlots(filterSlots(filter, slots));
@@ -179,6 +195,37 @@ function SlotsPage() {
     [soundCloseOn]
   );
 
+  const handleSaveWatcher = (watcher: SlotWatcher) => {
+    setSlotWatchers((prev) => {
+      const existingIndex = prev.findIndex((w) => w.id === watcher.id);
+      if (existingIndex >= 0) {
+        const updatedWatchers = [...prev];
+        updatedWatchers[existingIndex] = watcher;
+        return updatedWatchers;
+      }
+      return [...prev, watcher];
+    });
+  };
+
+  const handleDeleteWatcher = (id: number) => {
+    setSlotWatchers((prev) => prev.filter((watcher) => watcher.id !== id));
+  };
+
+  const updateWatcher = (watcher: SlotWatcher) => {
+    setSlotWatchers((watchers) => {
+      let index = watchers.findIndex((w) => w.id === watcher.id);
+      if (index != 0) {
+        const newWatchers = watchers.slice();
+        newWatchers[index] = {
+          ...newWatchers[index],
+          ...watcher,
+        };
+        return newWatchers;
+      }
+      return watchers;
+    });
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -195,10 +242,14 @@ function SlotsPage() {
       />
       <WatchSlotForm
         warehousesOptions={availableOptions}
-        onSubscibe={(val) => {
-          setSlotWatcher(val);
-        }}
-        watcher={slotWatcher}
+        onSave={handleSaveWatcher}
+        watcher={null}
+      />
+      <WatcherList
+        watchers={slotWatchers}
+        warehousesOptions={availableOptions}
+        onSave={(watcher) => updateWatcher(watcher)}
+        onDelete={handleDeleteWatcher}
       />
       <div>
         <Filter

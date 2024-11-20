@@ -1,36 +1,43 @@
 import { Autocomplete, Button, FormControl, TextField } from "@mui/material";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 import { Filter as FilterModel } from "../../models/filter";
 import { SlotWatcher } from "../../models/slot-watcher";
 import { boxTypes } from "../../constants/slots";
 import styles from "./WatchSlotForm.module.css";
-import { addButtonStyles, fieldStyles } from "./WatchSlotForm.styles";
-import { Add } from "@mui/icons-material";
+import { fieldStyles } from "./WatchSlotForm.styles";
 
 interface Props {
   warehousesOptions: FilterModel[];
   watcher: SlotWatcher | null;
-  onSubscibe: (slot: SlotWatcher | null) => void;
+  onSave: (slot: SlotWatcher) => void;
+  onCancelSave?: () => void;
 }
 
 function WatchSlotForm(props: Props) {
-  const { warehousesOptions, onSubscibe, watcher } = props;
+  const { warehousesOptions, onSave, onCancelSave, watcher } = props;
   const [formData, setFormData] = useState<{
     warehouse: { id: number; name: string } | null;
     boxType: { id: number; boxType: string } | null;
     sell: string;
+    id?: number;
   }>({
     warehouse: null,
     boxType: null,
     sell: "",
   });
 
-  const [isEdit, setIsEdit] = useState(false);
-
   const handleCancelSeve = () => {
-    setIsEdit(false);
+    if (onCancelSave) {
+      onCancelSave();
+    }
+    setFormData({
+      warehouse: null,
+      boxType: null,
+      sell: "",
+    });
   };
+
   const handleUpdateFormData = (field: string, value: unknown) => {
     setFormData((prev) => {
       return {
@@ -40,16 +47,35 @@ function WatchSlotForm(props: Props) {
     });
   };
 
+  useEffect(() => {
+    if (!watcher) {
+      setFormData({
+        warehouse: null,
+        boxType: null,
+        sell: "",
+      });
+    } else {
+      const { sell, boxType, boxTypeId, name, warehouseId, id } =
+        watcher as SlotWatcher;
+      setFormData({
+        warehouse: { id: warehouseId, name },
+        boxType: { id: boxTypeId, boxType },
+        sell: sell,
+        id,
+      });
+    }
+  }, [watcher]);
+
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { boxType, warehouse, sell } = formData;
     if (boxType && warehouse && sell) {
-      setIsEdit(false);
-      onSubscibe({
+      onSave({
         boxTypeId: boxType.id,
         boxType: boxType.boxType,
-        id: warehouse.id,
+        warehouseId: warehouse.id,
         name: warehouse.name,
+        id: Math.random(),
         sell,
       });
       setFormData({
@@ -60,51 +86,6 @@ function WatchSlotForm(props: Props) {
     }
   };
 
-  const handleEditForm = () => {
-    const { sell, boxType, boxTypeId, name, id } = watcher as SlotWatcher;
-    setFormData({
-      warehouse: { id, name },
-      boxType: { id: boxTypeId, boxType },
-      sell: sell,
-    });
-    setIsEdit(true);
-  };
-
-  if (!watcher && !isEdit) {
-    return (
-      <div className={styles.container}>
-        <Button
-          startIcon={<Add />}
-          onClick={() => setIsEdit(true)}
-          sx={addButtonStyles}
-        >
-          Добавить отслеживание слота
-        </Button>
-      </div>
-    );
-  }
-
-  if (watcher && !isEdit) {
-    return (
-      <div className={styles.container}>
-        Отслеживаем cлот: {watcher.name} - {watcher.boxType}
-        <Button onClick={handleEditForm}> Редактировать</Button>
-        <Button
-          onClick={() => {
-            onSubscibe(null);
-            setFormData({
-              warehouse: null,
-              boxType: null,
-              sell: "",
-            });
-            setIsEdit(false);
-          }}
-        >
-          Удалить
-        </Button>
-      </div>
-    );
-  }
   return (
     <form onSubmit={handleFormSubmit} className={styles.form}>
       <div className={styles.inputContainer}>
