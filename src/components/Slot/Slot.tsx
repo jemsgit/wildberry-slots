@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./Slot.module.css";
+import { msToHuman } from "../../utils/date-utils";
 
 interface SlotProps {
   name: string;
@@ -42,7 +43,7 @@ function Slot(props: SlotProps) {
     if (!endTime && startTime) {
       const start = startTime.getTime();
       timeOutRef.current = setInterval(() => {
-        setElapsedTime(((Date.now() - start) / 1000).toFixed(2));
+        setElapsedTime(msToHuman(Date.now() - start));
       }, 100);
     }
 
