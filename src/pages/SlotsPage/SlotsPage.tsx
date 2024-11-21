@@ -250,7 +250,7 @@ function SlotsPage() {
   const updateWatcher = (watcher: SlotWatcher) => {
     setSlotWatchers((watchers) => {
       let index = watchers.findIndex((w) => w.id === watcher.id);
-      if (index != 0) {
+      if (index > -1) {
         const newWatchers = watchers.slice();
         newWatchers[index] = {
           ...newWatchers[index],

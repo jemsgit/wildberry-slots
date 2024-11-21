@@ -33,23 +33,21 @@ function Settings(props: Props) {
         onClick={() => setSoundClose(!soundCloseOn)}
         color={"primary"}
         variant={"filled"}
-        label={`Уведомления сгорающих слотов: ${
-          soundCloseOn ? "🔉 on" : "🔇 off"
-        }`}
+        label={`Burned slots: ${soundCloseOn ? "🔉 on" : "🔇 off"}`}
         sx={chipStyle(soundCloseOn)}
       />
       <Chip
         onClick={() => setSoundOpen(!soundOpenOn)}
         color={"primary"}
         variant={"filled"}
-        label={`Уведомления новых слотов: ${soundOpenOn ? "🔉 on" : "🔇 off"}`}
+        label={`New slots: ${soundOpenOn ? "🔉 on" : "🔇 off"}`}
         sx={chipStyle(soundOpenOn)}
       />
       <Chip
         onClick={() => setAutoopenLink(!autoopenLinkOn)}
         color={"primary"}
         variant={"filled"}
-        label={`Автоокрытие ссылки: ${autoopenLinkOn ? "on" : "off"}`}
+        label={`Link autoopen: ${autoopenLinkOn ? "on" : "off"}`}
         sx={chipStyle(autoopenLinkOn)}
       />
     </div>

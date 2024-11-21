@@ -14,17 +14,24 @@ interface Props {
   onCancelSave?: () => void;
 }
 
+const defaultDelay = 10;
+const minDelay = 0;
+const maxDelay = 100;
+
 function WatchSlotForm(props: Props) {
   const { warehousesOptions, onSave, onCancelSave, watcher } = props;
   const [formData, setFormData] = useState<{
     warehouse: { id: number; name: string } | null;
     boxType: { id: number; boxType: string } | null;
+    delay: string;
+    date?: string;
     sell: string;
     id?: number;
   }>({
     warehouse: null,
     boxType: null,
     sell: "",
+    delay: String(defaultDelay),
   });
 
   const handleCancelSeve = () => {
@@ -35,6 +42,8 @@ function WatchSlotForm(props: Props) {
       warehouse: null,
       boxType: null,
       sell: "",
+      delay: String(defaultDelay),
+      date: undefined,
     });
   };
 
@@ -47,20 +56,46 @@ function WatchSlotForm(props: Props) {
     });
   };
 
+  const handleUpdateDelay = (val: string) => {
+    if (!val) {
+      handleUpdateFormData("delay", val);
+      return;
+    }
+    let delay = Number(val);
+    if (delay > maxDelay) {
+      delay = maxDelay;
+    } else if (delay < minDelay) {
+      delay = minDelay;
+    }
+    handleUpdateFormData("delay", String(delay));
+  };
+
   useEffect(() => {
     if (!watcher) {
       setFormData({
         warehouse: null,
         boxType: null,
         sell: "",
+        delay: String(defaultDelay),
+        date: undefined,
       });
     } else {
-      const { sell, boxType, boxTypeId, name, warehouseId, id } =
-        watcher as SlotWatcher;
+      const {
+        sell,
+        boxType,
+        boxTypeId,
+        name,
+        warehouseId,
+        id,
+        delay = defaultDelay,
+        date,
+      } = watcher as SlotWatcher;
       setFormData({
         warehouse: { id: warehouseId, name },
         boxType: { id: boxTypeId, boxType },
         sell: sell,
+        delay: String(delay),
+        date,
         id,
       });
     }
@@ -68,20 +103,24 @@ function WatchSlotForm(props: Props) {
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { boxType, warehouse, sell } = formData;
+    const { boxType, warehouse, sell, delay, date, id } = formData;
     if (boxType && warehouse && sell) {
       onSave({
         boxTypeId: boxType.id,
         boxType: boxType.boxType,
         warehouseId: warehouse.id,
         name: warehouse.name,
-        id: Math.random(),
+        id: id || Math.random(),
+        delay: Number(delay),
+        date,
         sell,
       });
       setFormData({
         warehouse: null,
         boxType: null,
         sell: "",
+        date: undefined,
+        delay: String(defaultDelay),
       });
     }
   };
@@ -128,11 +167,24 @@ function WatchSlotForm(props: Props) {
           placeholder="Номер поставки"
           size="small"
         />
+        <TextField
+          onChange={(e) => handleUpdateDelay(e.target.value)}
+          value={formData.delay}
+          label="Задержка"
+          placeholder="Задержка"
+          size="small"
+          type="number"
+          slotProps={{ htmlInput: { min: 0, max: 100 } }}
+        />
       </div>
-      <Button type="submit">Сохранить</Button>
-      <Button type="reset" onClick={handleCancelSeve}>
-        Отмена
-      </Button>
+      <div className={styles.buttons}>
+        <Button type="submit" variant="outlined">
+          Сохранить
+        </Button>
+        <Button type="reset" variant="outlined" onClick={handleCancelSeve}>
+          Отмена
+        </Button>
+      </div>
     </form>
   );
 }

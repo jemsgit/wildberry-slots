@@ -1,10 +1,11 @@
-import { Button } from "@mui/material";
+import { Button, Link } from "@mui/material";
 import { useState } from "react";
 
 import { Filter as FilterModel } from "../../models/filter";
 import { SlotWatcher } from "../../models/slot-watcher";
 import styles from "../WatchSlotForm/WatchSlotForm.module.css";
 import WatchSlotForm from "../WatchSlotForm/WatchSlotForm";
+import { wbPage } from "../../constants/common";
 
 interface Props {
   warehousesOptions: FilterModel[];
@@ -24,7 +25,14 @@ function WatchSlot(props: Props) {
   if (watcher && !isEdit) {
     return (
       <div className={styles.container}>
-        Отслеживаем cлот: {watcher.name} - {watcher.boxType}
+        Отслеживаем cлот: {watcher.name} / {watcher.boxType} /{" "}
+        <Link
+          href={`${wbPage}${watcher.sell}`}
+          target="_blank"
+          sx={{ color: "#17c8c7" }}
+        >
+          Поставка {watcher.sell}
+        </Link>
         <Button onClick={handleEditForm}> Редактировать</Button>
         <Button onClick={() => onDelete(watcher.id)}>Удалить</Button>
       </div>
