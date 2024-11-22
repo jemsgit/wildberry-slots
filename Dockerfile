@@ -4,6 +4,12 @@ FROM node:18-alpine AS build
 # Set working directory
 WORKDIR /app
 
+# Define build argument
+ARG VITE_WS_BASE_URL
+
+# Set environment variable for the build process
+ENV VITE_WS_BASE_URL=$VITE_WS_BASE_URL
+
 # Copy package.json and yarn.lock to install dependencies
 COPY package.json yarn.lock ./
 RUN yarn install
