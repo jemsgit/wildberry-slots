@@ -15,6 +15,9 @@ export default defineConfig(({ mode }) => ({
       enable: shouldUseMockServer(),
     }),
   ],
+  preview: {
+    port: 8080,
+  },
   server:
     mode === "development"
       ? {
