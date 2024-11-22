@@ -6,7 +6,7 @@ import { Filter, FilterDTO } from "../models/filter";
 export const slotsAdapter = {
   getSlots: async (): Promise<Slot[] | undefined> => {
     try {
-      let res = await fetcher.get("/acceptances");
+      let res = await fetcher.get("/api/acceptances");
       return res.data.map(slotMapper);
     } catch (e) {
       console.log(e);
@@ -14,7 +14,7 @@ export const slotsAdapter = {
   },
   getSlotsFilters: async (): Promise<Filter[] | undefined> => {
     try {
-      let res = await fetcher.get("/warehouses");
+      let res = await fetcher.get("/api/warehouses");
       return res.data.map((filter: FilterDTO) => ({
         id: filter.id,
         name: filter.name,

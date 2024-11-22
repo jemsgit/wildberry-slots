@@ -1,3 +1,4 @@
+import { wbPage } from "../constants/common";
 import { Slot } from "../models/slot";
 import { SlotWatcher } from "../models/slot-watcher";
 
@@ -7,9 +8,6 @@ import popSound from "../sounds/pop.mp3";
 const audioAdded = new Audio(addSound);
 audioAdded.volume = 0.4;
 const audioPop = new Audio(popSound);
-
-const wbPage =
-  "https://seller.wildberries.ru/supplies-management/new-supply/choose-date?preorderID=";
 
 export function checkSlots(
   slots: Slot[],
@@ -30,15 +28,24 @@ export function checkSlots(
     if (gotcha) {
       try {
         playOpenSound && audioAdded.play();
-        if (autoopenLink) {
-          timeoutId = setTimeout(() => {
-            playOpenSound && audioPop.play();
-            window.open(`${wbPage}${target.sell}`, "_blank");
-          }, (target.delay || 10) * 1000);
-        }
       } catch (e) {
         console.log(e);
       }
+      if (autoopenLink) {
+        if (!target.delay) {
+          window.open(`${wbPage}${target.sell}`, "_blank");
+        } else {
+          timeoutId = setTimeout(() => {
+            try {
+              playOpenSound && audioPop.play();
+            } catch (e) {
+              console.log(e);
+            }
+            window.open(`${wbPage}${target.sell}`, "_blank");
+          }, target.delay * 1000);
+        }
+      }
+
       return timeoutId || true;
     }
     return false;
@@ -64,15 +71,24 @@ export function checkSlot(
     if (gotcha) {
       try {
         playOpenSound && audioAdded.play();
-        if (autoopenLink) {
-          timeoutId = setTimeout(() => {
-            playOpenSound && audioPop.play();
-            window.open(`${wbPage}${target.sell}`, "_blank");
-          }, (target.delay || 10) * 1000);
-        }
       } catch (e) {
         console.log(e);
       }
+      if (autoopenLink) {
+        if (!target.delay) {
+          window.open(`${wbPage}${target.sell}`, "_blank");
+        } else {
+          timeoutId = setTimeout(() => {
+            try {
+              playOpenSound && audioPop.play();
+            } catch (e) {
+              console.log(e);
+            }
+            window.open(`${wbPage}${target.sell}`, "_blank");
+          }, target.delay * 1000);
+        }
+      }
+
       return timeoutId || true;
     }
     return false;

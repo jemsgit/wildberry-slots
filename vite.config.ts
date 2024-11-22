@@ -7,7 +7,7 @@ function shouldUseMockServer() {
 }
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     viteMockServe({
@@ -15,4 +15,23 @@ export default defineConfig({
       enable: shouldUseMockServer(),
     }),
   ],
-});
+  server:
+    mode === "development"
+      ? {
+          proxy: {
+            "/acceptances": {
+              target: "http://localhost:5173", // Replace with your backend server's URL
+              changeOrigin: true,
+              rewrite: (path) =>
+                path.replace(/^\/acceptances/, "/api/acceptances"),
+            },
+            "/warehouses": {
+              target: "http://localhost:5173", // Replace with your backend server's URL
+              changeOrigin: true,
+              rewrite: (path) =>
+                path.replace(/^\/warehouses/, "/api/warehouses"),
+            },
+          },
+        }
+      : {},
+}));
