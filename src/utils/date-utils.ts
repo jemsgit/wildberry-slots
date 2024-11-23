@@ -1,3 +1,12 @@
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(customParseFormat);
+dayjs.extend(timezone);
+
 export function msToHuman(ms: number) {
   // 1- Convert to seconds:
   let seconds = ms / 1000;
@@ -11,4 +20,12 @@ export function msToHuman(ms: number) {
   return `${hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds.toFixed(
     2
   )}`;
+}
+
+export function parseDateFromString(input: string, format = "DD.MM.YYYY") {
+  return dayjs(input, format).toDate();
+}
+
+export function dateToFormat(date: Date, outputFormat: string = "DD.MM.YYYY") {
+  return dayjs(date).format(outputFormat);
 }

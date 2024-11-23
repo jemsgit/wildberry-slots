@@ -6,10 +6,13 @@ import { SlotWatcher } from "../../models/slot-watcher";
 import { boxTypes } from "../../constants/slots";
 import styles from "./WatchSlotForm.module.css";
 import { fieldStyles } from "./WatchSlotForm.styles";
+import DateInput from "../DateInput/DateInput";
+import { dateToFormat, parseDateFromString } from "../../utils/date-utils";
 
 interface Props {
   warehousesOptions: FilterModel[];
   watcher: SlotWatcher | null;
+  isNew?: boolean;
   onSave: (slot: SlotWatcher) => void;
   onCancelSave?: () => void;
 }
@@ -19,12 +22,18 @@ const minDelay = 0;
 const maxDelay = 100;
 
 function WatchSlotForm(props: Props) {
-  const { warehousesOptions, onSave, onCancelSave, watcher } = props;
+  const {
+    warehousesOptions,
+    onSave,
+    onCancelSave,
+    watcher,
+    isNew = false,
+  } = props;
   const [formData, setFormData] = useState<{
     warehouse: { id: number; name: string } | null;
     boxType: { id: number; boxType: string } | null;
     delay: string;
-    date?: string;
+    date?: string | null;
     sell: string;
     id?: number;
   }>({
@@ -95,7 +104,7 @@ function WatchSlotForm(props: Props) {
         boxType: { id: boxTypeId, boxType },
         sell: sell,
         delay: String(delay),
-        date,
+        date: date ? dateToFormat(date) : null,
         id,
       });
     }
@@ -112,7 +121,7 @@ function WatchSlotForm(props: Props) {
         name: warehouse.name,
         id: id || Math.random(),
         delay: Number(delay),
-        date,
+        date: date ? parseDateFromString(date) : undefined,
         sell,
       });
       setFormData({
@@ -176,13 +185,26 @@ function WatchSlotForm(props: Props) {
           type="number"
           slotProps={{ htmlInput: { min: 0, max: 100 } }}
         />
+
+        <DateInput
+          locale="ru"
+          value={formData.date}
+          onChange={(val) => {
+            handleUpdateFormData("date", val);
+          }}
+          inputProps={{
+            placeholder: "Дата от",
+            label: "Дата отслеживания",
+            size: "small",
+          }}
+        />
       </div>
       <div className={styles.buttons}>
         <Button type="submit" variant="outlined">
           Сохранить
         </Button>
         <Button type="reset" variant="outlined" onClick={handleCancelSeve}>
-          Отмена
+          {isNew ? "Очистить" : "Отмена"}
         </Button>
       </div>
     </form>

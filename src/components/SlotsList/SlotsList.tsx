@@ -25,19 +25,28 @@ function SlotsList(props: SlotListProps) {
       </div>
       {slots.map(
         (
-          { name, id, boxType, boxTypeId, score, startTime, endTime, date },
+          {
+            name,
+            id,
+            boxType,
+            boxTypeId,
+            score,
+            startTime,
+            endTime,
+            dateFormatted,
+          },
           index
         ) => (
           <Slot
             name={name}
             boxType={boxType}
             boxTypeId={boxTypeId}
-            key={`${id}-${boxTypeId}-${date}`}
+            key={`${id}-${boxTypeId}-${dateFormatted}`}
             score={score}
             startTime={startTime}
             endTime={endTime}
             id={id}
-            date={date}
+            date={dateFormatted}
             onDelete={onDelete}
             isEven={index % 2 === 0}
           />

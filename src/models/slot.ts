@@ -7,7 +7,8 @@ export type Slot = {
   name: string;
   id: number;
   closed?: boolean;
-  date: string;
+  date: Date;
+  dateFormatted: string;
 };
 
 export type SlotDTO = {

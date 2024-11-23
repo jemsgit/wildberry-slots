@@ -54,13 +54,13 @@ function SlotsPage() {
       }
       if (type === "update") {
         setSlots((slots) => {
-          const { id, boxTypeId, date } = update as Slot;
+          const { id, boxTypeId, dateFormatted } = update as Slot;
           const updatedSlots = slots.slice();
           let currentSlotIndex = updatedSlots.findIndex(
             (slot) =>
               slot.id === id &&
               slot.boxTypeId === boxTypeId &&
-              slot.date === date
+              slot.dateFormatted === dateFormatted
           );
           if (currentSlotIndex < 0) {
             return [update as Slot, ...slots];
@@ -124,7 +124,6 @@ function SlotsPage() {
       }
       let slotsToDelay: Record<string, SlotWatcher> = {};
       let slotsToClearDelay: string[] = [];
-      console.log(slotWatchers);
       let delays = Object.keys(delayedList.current);
       let foundList: number[] = [];
       if (type === "initial") {
@@ -214,7 +213,7 @@ function SlotsPage() {
             (slot) =>
               slot.id === id &&
               slot.boxTypeId === boxTypeId &&
-              slot.date === date
+              slot.dateFormatted === date
           );
           if (slotIndex < 0) {
             return slots;
@@ -280,6 +279,7 @@ function SlotsPage() {
         warehousesOptions={availableOptions}
         onSave={handleSaveWatcher}
         watcher={null}
+        isNew
       />
       <WatcherList
         watchers={slotWatchers}

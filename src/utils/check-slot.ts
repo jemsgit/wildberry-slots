@@ -9,6 +9,41 @@ const audioAdded = new Audio(addSound);
 audioAdded.volume = 0.4;
 const audioPop = new Audio(popSound);
 
+function processMatchedSlot(
+  target: SlotWatcher,
+  autoopenLink: boolean,
+  playOpenSound: boolean
+) {
+  let timeoutId = null;
+  try {
+    playOpenSound && audioAdded.play();
+  } catch (e) {
+    console.log(e);
+  }
+  if (autoopenLink) {
+    if (!target.delay) {
+      window.open(`${wbPage}${target.sell}`, "_blank");
+    } else {
+      timeoutId = setTimeout(() => {
+        try {
+          playOpenSound && audioPop.play();
+        } catch (e) {
+          console.log(e);
+        }
+        window.open(`${wbPage}${target.sell}`, "_blank");
+      }, target.delay * 1000);
+    }
+  }
+  return timeoutId || true;
+}
+
+const isSlotMatchWatcher = (slot: Slot, watcher: SlotWatcher) =>
+  slot.boxTypeId === watcher.boxTypeId &&
+  slot.id === watcher.warehouseId &&
+  (!watcher.date || watcher.date.getTime() <= slot.date.getTime()) &&
+  !slot.endTime &&
+  slot.startTime;
+
 export function checkSlots(
   slots: Slot[],
   target: SlotWatcher | null,
@@ -16,37 +51,9 @@ export function checkSlots(
   playOpenSound: boolean
 ) {
   if (target) {
-    let timeoutId = null;
-    const gotcha = slots.find(
-      (item) =>
-        item.boxTypeId === target.boxTypeId &&
-        item.id === target.warehouseId &&
-        (!target.date || target.date === item.date) &&
-        !item.endTime &&
-        item.startTime
-    );
+    const gotcha = slots.find((item) => isSlotMatchWatcher(item, target));
     if (gotcha) {
-      try {
-        playOpenSound && audioAdded.play();
-      } catch (e) {
-        console.log(e);
-      }
-      if (autoopenLink) {
-        if (!target.delay) {
-          window.open(`${wbPage}${target.sell}`, "_blank");
-        } else {
-          timeoutId = setTimeout(() => {
-            try {
-              playOpenSound && audioPop.play();
-            } catch (e) {
-              console.log(e);
-            }
-            window.open(`${wbPage}${target.sell}`, "_blank");
-          }, target.delay * 1000);
-        }
-      }
-
-      return timeoutId || true;
+      return processMatchedSlot(target, autoopenLink, playOpenSound);
     }
     return false;
   }
@@ -60,41 +67,21 @@ export function checkSlot(
   playOpenSound: boolean
 ) {
   if (target) {
-    let timeoutId = null;
-    const gotcha =
-      slot.boxTypeId === target.boxTypeId &&
-      slot.id === target.warehouseId &&
-      (!target.date || target.date === slot.date) &&
-      !slot.endTime &&
-      slot.startTime;
+    const gotcha = isSlotMatchWatcher(slot, target);
 
     if (gotcha) {
-      try {
-        playOpenSound && audioAdded.play();
-      } catch (e) {
-        console.log(e);
-      }
-      if (autoopenLink) {
-        if (!target.delay) {
-          window.open(`${wbPage}${target.sell}`, "_blank");
-        } else {
-          timeoutId = setTimeout(() => {
-            try {
-              playOpenSound && audioPop.play();
-            } catch (e) {
-              console.log(e);
-            }
-            window.open(`${wbPage}${target.sell}`, "_blank");
-          }, target.delay * 1000);
-        }
-      }
-
-      return timeoutId || true;
+      return processMatchedSlot(target, autoopenLink, playOpenSound);
     }
     return false;
   }
   return false;
 }
+
+const isClosedSlotMatchWatcher = (slot: Slot, watcher: SlotWatcher) =>
+  slot.boxTypeId === watcher.boxTypeId &&
+  slot.id === watcher.warehouseId &&
+  (!watcher.date || watcher.date.getTime() <= slot.date.getTime()) &&
+  slot.endTime;
 
 export function checkClosedSlot(
   slot: Slot,
@@ -102,11 +89,7 @@ export function checkClosedSlot(
   timeoutId: number
 ) {
   if (target) {
-    const gotcha =
-      slot.boxTypeId === target.boxTypeId &&
-      slot.id === target.warehouseId &&
-      (!target.date || target.date === slot.date) &&
-      slot.endTime;
+    const gotcha = isClosedSlotMatchWatcher(slot, target);
 
     if (gotcha) {
       try {
@@ -127,13 +110,7 @@ export function checkClosedSlots(
   timeoutId: string
 ) {
   if (target) {
-    const gotcha = slots.find(
-      (item) =>
-        item.boxTypeId === target.boxTypeId &&
-        item.id === target.warehouseId &&
-        (!target.date || target.date === item.date) &&
-        item.endTime
-    );
+    const gotcha = slots.find((item) => isClosedSlotMatchWatcher(item, target));
     if (gotcha) {
       try {
         clearTimeout(+timeoutId);

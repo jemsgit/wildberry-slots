@@ -1,4 +1,5 @@
 import { Slot, SlotDTO } from "../models/slot";
+import { dateToFormat } from "../utils/date-utils";
 
 export const slotMapper = (item: SlotDTO): Slot => ({
   id: item.warehouseID,
@@ -10,5 +11,9 @@ export const slotMapper = (item: SlotDTO): Slot => ({
   boxType: item.boxTypeName,
   boxTypeId: item.boxTypeID,
   score: item.coefficient ?? -1,
-  date: new Date(item.date.replace("Z", "")).toLocaleDateString(),
+  date: new Date(item.date.replace("Z", "")),
+  dateFormatted: dateToFormat(
+    new Date(item.date.replace("Z", "")),
+    "DD.MM.YYYY"
+  ),
 });
