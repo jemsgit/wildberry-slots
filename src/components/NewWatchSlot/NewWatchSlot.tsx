@@ -1,27 +1,33 @@
-import { Button } from "@mui/material";
-import { useState } from "react";
+import { Box, Button } from "@mui/material";
+import { useCallback, useState } from "react";
+import { Add } from "@mui/icons-material";
 
 import { Filter as FilterModel } from "../../models/filter";
 import { SlotWatcher } from "../../models/slot-watcher";
-import styles from "../WatchSlotForm/WatchSlotForm.module.css";
 import { addButtonStyles } from "../WatchSlotForm/WatchSlotForm.styles";
-import { Add } from "@mui/icons-material";
 import WatchSlotForm from "../WatchSlotForm/WatchSlotForm";
 
 interface Props {
   warehousesOptions: FilterModel[];
-  watcher: SlotWatcher | null;
-  onSubscibe: (slot: SlotWatcher | null) => void;
+  onSave: (slot: SlotWatcher) => void;
 }
 
 function NewWatchSlot(props: Props) {
-  const { warehousesOptions, onSubscibe } = props;
+  const { warehousesOptions, onSave } = props;
+
+  const handleSave = useCallback(
+    (slot: SlotWatcher) => {
+      setIsEdit(false);
+      onSave(slot);
+    },
+    [onSave]
+  );
 
   const [isEdit, setIsEdit] = useState(false);
 
-  if (!isEdit) {
-    return (
-      <div className={styles.container}>
+  return (
+    <>
+      <Box sx={{ textAlign: "left" }}>
         <Button
           startIcon={<Add />}
           onClick={() => setIsEdit(true)}
@@ -29,17 +35,16 @@ function NewWatchSlot(props: Props) {
         >
           Добавить отслеживание слота
         </Button>
-      </div>
-    );
-  }
-
-  return (
-    <WatchSlotForm
-      watcher={null}
-      warehousesOptions={warehousesOptions}
-      onSave={onSubscibe}
-      onCancelSave={() => setIsEdit(false)}
-    />
+      </Box>
+      {isEdit && (
+        <WatchSlotForm
+          watcher={null}
+          warehousesOptions={warehousesOptions}
+          onSave={handleSave}
+          onCancelSave={() => setIsEdit(false)}
+        />
+      )}
+    </>
   );
 }
 

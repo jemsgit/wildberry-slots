@@ -8,8 +8,6 @@
   justify-content: space-between;
   position: relative;
   z-index: 2;
-  padding: 4px 12px;
-  border-bottom: 1px #4a4a4a solid;
   box-sizing: border-box;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -21,7 +19,7 @@
 
 .container.containerDeleting,
 .container.new {
-  transform: scale(1.05);
+  transform: scale(1);
 }
 
 .container.new::before {

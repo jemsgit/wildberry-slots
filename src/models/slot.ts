@@ -1,14 +1,16 @@
 export type Slot = {
   startTime?: Date;
+  startTimeFormatted?: string;
   endTime?: Date;
   score: number;
   boxType: string;
   boxTypeId: number;
   name: string;
-  id: number;
+  warehouseId: number;
   closed?: boolean;
   date: Date;
   dateFormatted: string;
+  id: string;
 };
 
 export type SlotDTO = {

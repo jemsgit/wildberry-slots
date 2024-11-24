@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Box } from "@mui/material";
 import { slotsAdapter } from "../../adapters/api-adapter";
 import { realTimeSlotsAdapter } from "../../adapters/real-time-adapter";
 import SlotsList from "../../components/SlotsList/SlotsList";
 import { Slot } from "../../models/slot";
-import Filter from "../../components/Filter/Filter";
+
 import { Filter as FilterModel } from "../../models/filter";
 
 import sound from "../../sounds/fire.mp3";
-import WatchSlotForm from "../../components/WatchSlotForm/WatchSlotForm";
+
 import { SlotWatcher } from "../../models/slot-watcher";
 import {
   checkClosedSlot,
@@ -17,6 +18,9 @@ import {
 } from "../../utils/check-slot";
 import Settings from "../../components/Settings/Settings";
 import WatcherList from "../../components/WatcherList/WatcherList";
+import Tabs from "../../components/Tabs/Tabs";
+import Description from "../../components/Description/Description";
+import NewWatchSlot from "../../components/NewWatchSlot/NewWatchSlot";
 
 const audio = new Audio(sound);
 
@@ -24,13 +28,17 @@ const filterSlots = (filter: FilterModel[], slots: Slot[]): Slot[] => {
   const filteredByClose = slots.filter(
     (slot) => !slot.closed && slot.startTime
   );
+  console.log("fi;tered", filteredByClose.length);
+  console.log(filter);
   if (!filter || !filter.length) {
     return filteredByClose;
   }
 
   const filterCodes = filter.map((item) => item.id);
 
-  return filteredByClose.filter((slot) => filterCodes.includes(slot.id));
+  return filteredByClose.filter((slot) =>
+    filterCodes.includes(slot.warehouseId)
+  );
 };
 
 function SlotsPage() {
@@ -39,7 +47,6 @@ function SlotsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [filtersIsLoading, setFiltersIsLoading] = useState(false);
   const [availableOptions, setAvailableOptions] = useState<FilterModel[]>([]);
-  const [filter, setFilter] = useState<FilterModel[]>([]);
   const [slotWatchers, setSlotWatchers] = useState<SlotWatcher[]>([]);
   const [autoopenLinkOn, setAutoopenLinkOn] = useState(true);
   const [soundCloseOn, setSoundClose] = useState(true);
@@ -54,11 +61,11 @@ function SlotsPage() {
       }
       if (type === "update") {
         setSlots((slots) => {
-          const { id, boxTypeId, dateFormatted } = update as Slot;
+          const { warehouseId, boxTypeId, dateFormatted } = update as Slot;
           const updatedSlots = slots.slice();
           let currentSlotIndex = updatedSlots.findIndex(
             (slot) =>
-              slot.id === id &&
+              slot.warehouseId === warehouseId &&
               slot.boxTypeId === boxTypeId &&
               slot.dateFormatted === dateFormatted
           );
@@ -197,24 +204,26 @@ function SlotsPage() {
   }, [slotWatchers.length, checkWatcher]);
 
   useEffect(() => {
-    setVisibleSlots(filterSlots(filter, slots));
-  }, [slots, filter]);
+    setVisibleSlots(filterSlots([], slots));
+  }, [slots]);
 
   const onDelete = useCallback(
-    (id: number, boxTypeId: number, date: string) => {
+    (warehouseId: number, boxTypeId: number, dateFormatted: string) => {
       try {
         soundCloseOn && audio.play();
       } catch (e) {
         console.log(e);
       }
+
       setTimeout(() => {
         setSlots((slots) => {
           const slotIndex = slots.findIndex(
             (slot) =>
-              slot.id === id &&
+              slot.warehouseId === warehouseId &&
               slot.boxTypeId === boxTypeId &&
-              slot.dateFormatted === date
+              slot.dateFormatted === dateFormatted
           );
+          console.log(slotIndex);
           if (slotIndex < 0) {
             return slots;
           }
@@ -261,41 +270,55 @@ function SlotsPage() {
     });
   };
 
-  if (isLoading) {
+  if (isLoading || filtersIsLoading) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
-      <Settings
-        autoopenLinkOn={autoopenLinkOn}
-        soundCloseOn={soundCloseOn}
-        soundOpenOn={soundOpenOn}
-        setSoundClose={setSoundClose}
-        setSoundOpen={setSoundOpen}
-        setAutoopenLink={setAutoopenLinkOn}
+      <Description />
+      <Tabs
+        renderWatcherTab={() => (
+          <Box>
+            <NewWatchSlot
+              warehousesOptions={availableOptions}
+              onSave={handleSaveWatcher}
+            />
+            <WatcherList
+              watchers={slotWatchers}
+              warehousesOptions={availableOptions}
+              onSave={(watcher) => updateWatcher(watcher)}
+              onDelete={handleDeleteWatcher}
+            />
+          </Box>
+        )}
+        renderSettingsTab={() => (
+          <Settings
+            autoopenLinkOn={autoopenLinkOn}
+            soundCloseOn={soundCloseOn}
+            soundOpenOn={soundOpenOn}
+            setSoundClose={setSoundClose}
+            setSoundOpen={setSoundOpen}
+            setAutoopenLink={setAutoopenLinkOn}
+          />
+        )}
+        renderFAQTab={() => (
+          <Settings
+            autoopenLinkOn={autoopenLinkOn}
+            soundCloseOn={soundCloseOn}
+            soundOpenOn={soundOpenOn}
+            setSoundClose={setSoundClose}
+            setSoundOpen={setSoundOpen}
+            setAutoopenLink={setAutoopenLinkOn}
+          />
+        )}
       />
-      <WatchSlotForm
-        warehousesOptions={availableOptions}
-        onSave={handleSaveWatcher}
-        watcher={null}
-        isNew
+
+      <SlotsList
+        slots={visibleSlots}
+        filterOptions={availableOptions}
+        onDelete={onDelete}
       />
-      <WatcherList
-        watchers={slotWatchers}
-        warehousesOptions={availableOptions}
-        onSave={(watcher) => updateWatcher(watcher)}
-        onDelete={handleDeleteWatcher}
-      />
-      <div>
-        <Filter
-          value={filter}
-          onChange={setFilter}
-          availableOptions={availableOptions}
-          isLoading={filtersIsLoading}
-        />
-      </div>
-      <SlotsList slots={visibleSlots} onDelete={onDelete} />
     </div>
   );
 }

@@ -1,10 +1,16 @@
-import { Autocomplete, Button, FormControl, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  Dialog,
+  FormControl,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
 import { Filter as FilterModel } from "../../models/filter";
 import { SlotWatcher } from "../../models/slot-watcher";
 import { boxTypes } from "../../constants/slots";
-import styles from "./WatchSlotForm.module.css";
 import { fieldStyles } from "./WatchSlotForm.styles";
 import DateInput from "../DateInput/DateInput";
 import { dateToFormat, parseDateFromString } from "../../utils/date-utils";
@@ -135,79 +141,81 @@ function WatchSlotForm(props: Props) {
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className={styles.form}>
-      <div className={styles.inputContainer}>
-        <FormControl sx={fieldStyles}>
-          <Autocomplete
-            id="tags-outlined"
-            options={warehousesOptions}
-            getOptionLabel={(option) => option.name}
-            filterSelectedOptions
-            value={formData.warehouse}
-            onChange={(_, val) => handleUpdateFormData("warehouse", val)}
+    <Dialog open sx={{ padding: 2 }}>
+      <form onSubmit={handleFormSubmit} style={{ padding: "16px" }}>
+        <Stack gap={2}>
+          <FormControl sx={fieldStyles}>
+            <Autocomplete
+              id="tags-outlined"
+              options={warehousesOptions}
+              getOptionLabel={(option) => option.name}
+              filterSelectedOptions
+              value={formData.warehouse}
+              onChange={(_, val) => handleUpdateFormData("warehouse", val)}
+              size="small"
+              renderInput={(params) => (
+                <TextField {...params} label="Склады" placeholder="Склад" />
+              )}
+            />
+          </FormControl>
+          <FormControl sx={fieldStyles}>
+            <Autocomplete
+              id="tags-outlined"
+              options={boxTypes}
+              getOptionLabel={(option) => option.boxType}
+              filterSelectedOptions
+              value={formData.boxType}
+              onChange={(_, val) => handleUpdateFormData("boxType", val)}
+              size="small"
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Тип поставки"
+                  placeholder="Тип поставки"
+                />
+              )}
+            />
+          </FormControl>
+          <TextField
+            onChange={(e) => handleUpdateFormData("sell", e.target.value)}
+            value={formData.sell}
+            label="Поставка"
+            placeholder="Номер поставки"
             size="small"
-            renderInput={(params) => (
-              <TextField {...params} label="Склады" placeholder="Склад" />
-            )}
           />
-        </FormControl>
-        <FormControl sx={fieldStyles}>
-          <Autocomplete
-            id="tags-outlined"
-            options={boxTypes}
-            getOptionLabel={(option) => option.boxType}
-            filterSelectedOptions
-            value={formData.boxType}
-            onChange={(_, val) => handleUpdateFormData("boxType", val)}
+          <TextField
+            onChange={(e) => handleUpdateDelay(e.target.value)}
+            value={formData.delay}
+            label="Задержка"
+            placeholder="Задержка"
             size="small"
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Тип поставки"
-                placeholder="Тип поставки"
-              />
-            )}
+            type="number"
+            slotProps={{ htmlInput: { min: 0, max: 100 } }}
           />
-        </FormControl>
-        <TextField
-          onChange={(e) => handleUpdateFormData("sell", e.target.value)}
-          value={formData.sell}
-          label="Поставка"
-          placeholder="Номер поставки"
-          size="small"
-        />
-        <TextField
-          onChange={(e) => handleUpdateDelay(e.target.value)}
-          value={formData.delay}
-          label="Задержка"
-          placeholder="Задержка"
-          size="small"
-          type="number"
-          slotProps={{ htmlInput: { min: 0, max: 100 } }}
-        />
 
-        <DateInput
-          locale="ru"
-          value={formData.date}
-          onChange={(val) => {
-            handleUpdateFormData("date", val);
-          }}
-          inputProps={{
-            placeholder: "Дата от",
-            label: "Дата отслеживания",
-            size: "small",
-          }}
-        />
-      </div>
-      <div className={styles.buttons}>
-        <Button type="submit" variant="outlined">
-          Сохранить
-        </Button>
-        <Button type="reset" variant="outlined" onClick={handleCancelSeve}>
-          {isNew ? "Очистить" : "Отмена"}
-        </Button>
-      </div>
-    </form>
+          <DateInput
+            locale="ru"
+            value={formData.date}
+            onChange={(val) => {
+              handleUpdateFormData("date", val);
+            }}
+            inputProps={{
+              placeholder: "Дата от",
+              label: "Дата отслеживания",
+              size: "small",
+            }}
+          />
+          <Stack direction="row" gap={2}>
+            <Button type="submit" variant="outlined">
+              Сохранить
+            </Button>
+            <Button type="reset" variant="outlined" onClick={handleCancelSeve}>
+              {isNew ? "Очистить" : "Отмена"}
+            </Button>
+          </Stack>
+        </Stack>
+      </form>
+    </Dialog>
   );
 }
 

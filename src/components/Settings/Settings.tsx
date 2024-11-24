@@ -5,6 +5,7 @@ const chipStyle = (isOn: boolean) => {
   return {
     backgroundColor: isOn ? "#2b892b" : "#af0000",
     fontSize: "16px",
+    color: "#fff",
   };
 };
 

@@ -39,7 +39,7 @@ function processMatchedSlot(
 
 const isSlotMatchWatcher = (slot: Slot, watcher: SlotWatcher) =>
   slot.boxTypeId === watcher.boxTypeId &&
-  slot.id === watcher.warehouseId &&
+  slot.warehouseId === watcher.warehouseId &&
   (!watcher.date || watcher.date.getTime() <= slot.date.getTime()) &&
   !slot.endTime &&
   slot.startTime;
@@ -79,7 +79,7 @@ export function checkSlot(
 
 const isClosedSlotMatchWatcher = (slot: Slot, watcher: SlotWatcher) =>
   slot.boxTypeId === watcher.boxTypeId &&
-  slot.id === watcher.warehouseId &&
+  slot.warehouseId === watcher.warehouseId &&
   (!watcher.date || watcher.date.getTime() <= slot.date.getTime()) &&
   slot.endTime;
 
