@@ -107,7 +107,10 @@ function SlotsList(props: SlotListProps) {
       <DataGrid
         rows={rows}
         columns={colDef}
-        slots={{ row: Slot, toolbar: CustomToolbar }}
+        slots={{
+          row: Slot,
+          toolbar: CustomToolbar,
+        }}
         slotProps={{
           row: {
             onDelete,
@@ -123,6 +126,23 @@ function SlotsList(props: SlotListProps) {
           columnMenuFilter: "Фильтровать",
           toolbarFiltersLabel: "Фильтровать",
           toolbarFilters: "Фильтровать",
+          columnMenuManageColumns: "Управлять колонками",
+          columnMenuUnsort: "Очистить сортировку",
+          filterOperatorContains: "содержит",
+          filterOperatorDoesNotContain: "не содержит",
+          filterOperatorEquals: "равно",
+          filterOperatorDoesNotEqual: "не равно",
+          filterOperatorStartsWith: "начинается с",
+          filterOperatorEndsWith: "заканчивается на",
+          filterOperatorIs: "является",
+          filterOperatorNot: "не является",
+          filterOperatorAfter: "после",
+          filterOperatorOnOrAfter: "включительно после",
+          filterOperatorBefore: "до",
+          filterOperatorOnOrBefore: "включительно до",
+          filterOperatorIsEmpty: "пусто",
+          filterOperatorIsNotEmpty: "не пусто",
+          filterOperatorIsAnyOf: "любой из",
         }}
       />
     </div>
