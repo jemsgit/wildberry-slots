@@ -2,9 +2,11 @@ import {
   Autocomplete,
   Button,
   Dialog,
+  DialogTitle,
   FormControl,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -142,6 +144,12 @@ function WatchSlotForm(props: Props) {
 
   return (
     <Dialog open sx={{ padding: 2 }}>
+      <Typography variant="h6">
+        {isNew ? "Добавление отслеживания" : "Изменение отслеживания"}
+      </Typography>
+      <DialogTitle>
+        {isNew ? "Добавление отслеживания" : "Изменение отслеживания"}
+      </DialogTitle>
       <form onSubmit={handleFormSubmit} style={{ padding: "16px" }}>
         <Stack gap={2}>
           <FormControl sx={fieldStyles}>

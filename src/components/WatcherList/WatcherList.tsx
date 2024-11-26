@@ -1,7 +1,7 @@
 import { SlotWatcher } from "../../models/slot-watcher";
 import WatchSlot from "../WatchSlot/WatchSlot";
 import { Filter as FilterModel } from "../../models/filter";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 interface WatcherListProps {
   watchers: SlotWatcher[];
@@ -18,7 +18,6 @@ function WatcherList({
 }: WatcherListProps) {
   return (
     <Box>
-      <Typography>Ваши отслеживания</Typography>
       {!watchers.length && "У вас пока нет отслеживаний"}
       {watchers.map((watcher) => (
         <div key={watcher.id}>

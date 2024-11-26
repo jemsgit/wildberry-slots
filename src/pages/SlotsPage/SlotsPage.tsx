@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Paper, Stack } from "@mui/material";
 import { slotsAdapter } from "../../adapters/api-adapter";
 import { realTimeSlotsAdapter } from "../../adapters/real-time-adapter";
 import SlotsList from "../../components/SlotsList/SlotsList";
@@ -18,9 +18,8 @@ import {
 } from "../../utils/check-slot";
 import Settings from "../../components/Settings/Settings";
 import WatcherList from "../../components/WatcherList/WatcherList";
-import Tabs from "../../components/Tabs/Tabs";
-import Description from "../../components/Description/Description";
 import NewWatchSlot from "../../components/NewWatchSlot/NewWatchSlot";
+import SectionHeader from "../../components/SectionHeader/SectionHeader";
 
 const audio = new Audio(sound);
 
@@ -223,7 +222,6 @@ function SlotsPage() {
               slot.boxTypeId === boxTypeId &&
               slot.dateFormatted === dateFormatted
           );
-          console.log(slotIndex);
           if (slotIndex < 0) {
             return slots;
           }
@@ -276,49 +274,53 @@ function SlotsPage() {
 
   return (
     <div>
-      <Description />
-      <Tabs
-        renderWatcherTab={() => (
-          <Box>
-            <NewWatchSlot
-              warehousesOptions={availableOptions}
-              onSave={handleSaveWatcher}
-            />
-            <WatcherList
-              watchers={slotWatchers}
-              warehousesOptions={availableOptions}
-              onSave={(watcher) => updateWatcher(watcher)}
-              onDelete={handleDeleteWatcher}
-            />
-          </Box>
-        )}
-        renderSettingsTab={() => (
-          <Settings
-            autoopenLinkOn={autoopenLinkOn}
-            soundCloseOn={soundCloseOn}
-            soundOpenOn={soundOpenOn}
-            setSoundClose={setSoundClose}
-            setSoundOpen={setSoundOpen}
-            setAutoopenLink={setAutoopenLinkOn}
-          />
-        )}
-        renderFAQTab={() => (
-          <Settings
-            autoopenLinkOn={autoopenLinkOn}
-            soundCloseOn={soundCloseOn}
-            soundOpenOn={soundOpenOn}
-            setSoundClose={setSoundClose}
-            setSoundOpen={setSoundOpen}
-            setAutoopenLink={setAutoopenLinkOn}
-          />
-        )}
-      />
+      <Stack gap={3}>
+        <Stack direction="row" gap={3}>
+          <Paper elevation={3} sx={{ p: 3, flex: "3 1 auto", borderRadius: 3 }}>
+            <Box>
+              <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+                <SectionHeader text="Отслеживания" />
+                <NewWatchSlot
+                  warehousesOptions={availableOptions}
+                  onSave={handleSaveWatcher}
+                />
+              </Stack>
+              <Box sx={{ pt: 3, textAlign: "left" }}>
+                <WatcherList
+                  watchers={slotWatchers}
+                  warehousesOptions={availableOptions}
+                  onSave={(watcher) => updateWatcher(watcher)}
+                  onDelete={handleDeleteWatcher}
+                />
+              </Box>
+            </Box>
+          </Paper>
 
-      <SlotsList
-        slots={visibleSlots}
-        filterOptions={availableOptions}
-        onDelete={onDelete}
-      />
+          <Paper
+            elevation={3}
+            sx={{ p: 3, flex: "1 1 100px", borderRadius: 3 }}
+          >
+            <SectionHeader text="Настройки" />
+
+            <Box>
+              <Settings
+                autoopenLinkOn={autoopenLinkOn}
+                soundCloseOn={soundCloseOn}
+                soundOpenOn={soundOpenOn}
+                setSoundClose={setSoundClose}
+                setSoundOpen={setSoundOpen}
+                setAutoopenLink={setAutoopenLinkOn}
+              />
+            </Box>
+          </Paper>
+        </Stack>
+
+        <SlotsList
+          slots={visibleSlots}
+          filterOptions={availableOptions}
+          onDelete={onDelete}
+        />
+      </Stack>
     </div>
   );
 }

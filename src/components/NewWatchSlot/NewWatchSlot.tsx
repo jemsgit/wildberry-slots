@@ -32,9 +32,7 @@ function NewWatchSlot(props: Props) {
           startIcon={<Add />}
           onClick={() => setIsEdit(true)}
           sx={addButtonStyles}
-        >
-          Добавить отслеживание слота
-        </Button>
+        />
       </Box>
       {isEdit && (
         <WatchSlotForm

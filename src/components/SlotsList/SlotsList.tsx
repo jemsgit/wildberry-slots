@@ -6,6 +6,7 @@ import { Slot as SlotModel } from "../../models/slot";
 import { msToHuman } from "../../utils/date-utils";
 import Slot from "../Slot/Slot";
 import CustomToolbar from "../CustomToolbar/CustomToolbar";
+import { Paper, Typography } from "@mui/material";
 
 declare module "@mui/x-data-grid" {
   interface RowPropsOverrides {
@@ -103,7 +104,23 @@ function SlotsList(props: SlotListProps) {
   }, [slots]);
 
   return (
-    <div>
+    <Paper
+      elevation={3}
+      sx={{
+        p: 3,
+        borderRadius: 3,
+        border: (theme) => `1px ${theme.palette.text.secondary} solid`,
+      }}
+    >
+      <Typography
+        variant="h5"
+        sx={{
+          color: (theme) => theme.palette.text.secondary,
+          textAlign: "left",
+        }}
+      >
+        Доступные слоты
+      </Typography>
       <DataGrid
         rows={rows}
         columns={colDef}
@@ -145,7 +162,7 @@ function SlotsList(props: SlotListProps) {
           filterOperatorIsAnyOf: "любой из",
         }}
       />
-    </div>
+    </Paper>
   );
 }
 
