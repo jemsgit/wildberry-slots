@@ -9,6 +9,7 @@ import {
   Link,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -22,6 +23,7 @@ import DateInput from "../DateInput/DateInput";
 import { dateToFormat, parseDateFromString } from "../../utils/date-utils";
 import { useDesktopMode } from "../../hooks/useDesktop";
 
+const tgLink = "https://t.me/AngrySlots";
 interface Props {
   warehousesOptions: FilterModel[];
   watcher: SlotWatcher | null;
@@ -212,7 +214,14 @@ function WatchSlotForm(props: Props) {
               )}
             />
           </FormControl>
-          <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              mb: 3,
+            }}
+          >
             <TextField
               onChange={(e) => handleUpdateFormData("sell", e.target.value)}
               value={formData.sell}
@@ -244,7 +253,12 @@ function WatchSlotForm(props: Props) {
                 <Link
                   onClick={handleNoDelay}
                   fontSize={14}
-                  sx={{ cursor: "pointer" }}
+                  sx={{
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: (theme) => theme.palette.text.secondary,
+                    },
+                  }}
                 >
                   Без задержки
                 </Link>
@@ -272,15 +286,37 @@ function WatchSlotForm(props: Props) {
               </FormHelperText>
             </Box>
           </Stack>
-          <Stack direction="row" gap={2}>
-            <Button type="submit" variant="outlined">
+          <Stack direction="row" gap={2} sx={{ justifyContent: "center" }}>
+            <Button type="submit" variant="contained" sx={{ width: "200px" }}>
               Сохранить
             </Button>
-            <Button type="reset" variant="outlined" onClick={handleCancelSeve}>
+            <Button
+              type="reset"
+              variant="outlined"
+              sx={{ width: "200px" }}
+              onClick={handleCancelSeve}
+            >
               Отмена
             </Button>
           </Stack>
         </Stack>
+        <Typography sx={{ fontSize: "13px", lineHeight: 1, mt: 2 }}>
+          Сервис предоставляется бесплатно.
+        </Typography>
+        <Typography sx={{ fontSize: "13px", lineHeight: 1 }}>
+          Будем рады, если Вы подпишетесь на наш{" "}
+          <Link
+            sx={{
+              cursor: "pointer",
+              "&:hover": {
+                color: (theme) => theme.palette.text.secondary,
+              },
+            }}
+            href={tgLink}
+          >
+            канал в Telegram
+          </Link>
+        </Typography>
       </form>
     </Dialog>
   );
