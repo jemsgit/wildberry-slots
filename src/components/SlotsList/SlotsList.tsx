@@ -6,18 +6,12 @@ import { Slot as SlotModel } from "../../models/slot";
 import { msToHuman } from "../../utils/date-utils";
 import Slot from "../Slot/Slot";
 import CustomToolbar from "../CustomToolbar/CustomToolbar";
-import { Paper, Typography } from "@mui/material";
-
-declare module "@mui/x-data-grid" {
-  interface RowPropsOverrides {
-    onDelete: (id: number, boxType: number, date: string) => void;
-  }
-}
+import { Paper } from "@mui/material";
+import SectionHeader from "../SectionHeader/SectionHeader";
 
 interface SlotListProps {
   slots: SlotModel[];
   filterOptions: FilterModel[];
-  onDelete: (id: number, boxType: number, date: string) => void;
 }
 
 const columns: GridColDef[] = [
@@ -69,7 +63,7 @@ const columns: GridColDef[] = [
 ];
 
 function SlotsList(props: SlotListProps) {
-  const { slots = [], filterOptions, onDelete } = props;
+  const { slots = [], filterOptions } = props;
   const [colDef, setColDef] = useState(columns);
 
   useEffect(() => {
@@ -112,15 +106,8 @@ function SlotsList(props: SlotListProps) {
         border: (theme) => `1px ${theme.palette.text.secondary} solid`,
       }}
     >
-      <Typography
-        variant="h5"
-        sx={{
-          color: (theme) => theme.palette.text.secondary,
-          textAlign: "left",
-        }}
-      >
-        Доступные слоты
-      </Typography>
+      <SectionHeader center text="Доступные слоты" />
+
       <DataGrid
         rows={rows}
         columns={colDef}
@@ -128,9 +115,9 @@ function SlotsList(props: SlotListProps) {
           row: Slot,
           toolbar: CustomToolbar,
         }}
-        slotProps={{
-          row: {
-            onDelete,
+        sx={{
+          ".MuiDataGrid-columnHeaders > div": {
+            borderRadius: "15px",
           },
         }}
         localeText={{

@@ -1,12 +1,14 @@
 import {
   Autocomplete,
+  Box,
   Button,
   Dialog,
   DialogTitle,
   FormControl,
+  FormHelperText,
+  Link,
   Stack,
   TextField,
-  Typography,
 } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -20,7 +22,6 @@ import { dateToFormat, parseDateFromString } from "../../utils/date-utils";
 interface Props {
   warehousesOptions: FilterModel[];
   watcher: SlotWatcher | null;
-  isNew?: boolean;
   onSave: (slot: SlotWatcher) => void;
   onCancelSave?: () => void;
 }
@@ -30,13 +31,8 @@ const minDelay = 0;
 const maxDelay = 100;
 
 function WatchSlotForm(props: Props) {
-  const {
-    warehousesOptions,
-    onSave,
-    onCancelSave,
-    watcher,
-    isNew = false,
-  } = props;
+  const { warehousesOptions, onSave, onCancelSave, watcher } = props;
+
   const [formData, setFormData] = useState<{
     warehouse: { id: number; name: string } | null;
     boxType: { id: number; boxType: string } | null;
@@ -71,6 +67,11 @@ function WatchSlotForm(props: Props) {
         [field]: value,
       };
     });
+  };
+
+  const handleNoDelay = (e: React.MouseEvent) => {
+    e.preventDefault();
+    handleUpdateFormData("delay", 0);
   };
 
   const handleUpdateDelay = (val: string) => {
@@ -143,12 +144,18 @@ function WatchSlotForm(props: Props) {
   };
 
   return (
-    <Dialog open sx={{ padding: 2 }}>
-      <Typography variant="h6">
-        {isNew ? "Добавление отслеживания" : "Изменение отслеживания"}
-      </Typography>
+    <Dialog
+      open
+      fullWidth
+      sx={{ padding: 2 }}
+      onClose={(_, reason) => {
+        if (reason === "escapeKeyDown") {
+          handleCancelSeve();
+        }
+      }}
+    >
       <DialogTitle>
-        {isNew ? "Добавление отслеживания" : "Изменение отслеживания"}
+        {watcher ? "Изменение отслеживания" : "Добавление отслеживания"}
       </DialogTitle>
       <form onSubmit={handleFormSubmit} style={{ padding: "16px" }}>
         <Stack gap={2}>
@@ -184,41 +191,65 @@ function WatchSlotForm(props: Props) {
               )}
             />
           </FormControl>
-          <TextField
-            onChange={(e) => handleUpdateFormData("sell", e.target.value)}
-            value={formData.sell}
-            label="Поставка"
-            placeholder="Номер поставки"
-            size="small"
-          />
-          <TextField
-            onChange={(e) => handleUpdateDelay(e.target.value)}
-            value={formData.delay}
-            label="Задержка"
-            placeholder="Задержка"
-            size="small"
-            type="number"
-            slotProps={{ htmlInput: { min: 0, max: 100 } }}
-          />
+          <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
+            <TextField
+              onChange={(e) => handleUpdateFormData("sell", e.target.value)}
+              value={formData.sell}
+              label="Поставка"
+              placeholder="Номер поставки"
+              size="small"
+            />
+            <FormHelperText>
+              По этому номеру откроется ссылка на бронирование
+            </FormHelperText>
+          </Box>
+          <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
+            <TextField
+              onChange={(e) => handleUpdateDelay(e.target.value)}
+              value={formData.delay}
+              label="Задержка (сек)"
+              placeholder="Задержка"
+              size="small"
+              type="number"
+              slotProps={{
+                htmlInput: { min: 0, max: 100 },
+              }}
+            />
+            <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+              <FormHelperText>Необязательно</FormHelperText>
+              <Link
+                onClick={handleNoDelay}
+                fontSize={14}
+                sx={{ cursor: "pointer" }}
+              >
+                Без задержки
+              </Link>
+            </Stack>
+          </Box>
 
-          <DateInput
-            locale="ru"
-            value={formData.date}
-            onChange={(val) => {
-              handleUpdateFormData("date", val);
-            }}
-            inputProps={{
-              placeholder: "Дата от",
-              label: "Дата отслеживания",
-              size: "small",
-            }}
-          />
+          <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
+            <DateInput
+              locale="ru"
+              value={formData.date}
+              onChange={(val) => {
+                handleUpdateFormData("date", val);
+              }}
+              inputProps={{
+                placeholder: "Дата от",
+                label: "Дата отслеживания",
+                size: "small",
+              }}
+            />
+            <FormHelperText>
+              От какой даты отслеживается слот. Необязательно
+            </FormHelperText>
+          </Box>
           <Stack direction="row" gap={2}>
             <Button type="submit" variant="outlined">
               Сохранить
             </Button>
             <Button type="reset" variant="outlined" onClick={handleCancelSeve}>
-              {isNew ? "Очистить" : "Отмена"}
+              Отмена
             </Button>
           </Stack>
         </Stack>

@@ -1,5 +1,8 @@
-import { Button, Link } from "@mui/material";
-import { useState } from "react";
+import { Box, Button, Link, Paper, Stack } from "@mui/material";
+import { useMemo, useState } from "react";
+import PlaceIcon from "@mui/icons-material/Place";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import Icon from "@mui/material/Icon";
 
 import { Filter as FilterModel } from "../../models/filter";
 import { SlotWatcher } from "../../models/slot-watcher";
@@ -22,23 +25,43 @@ function WatchSlot(props: Props) {
     setIsEdit(true);
   };
 
+  const date = useMemo(() => {
+    if (watcher?.date) {
+      return watcher?.date.toLocaleString().split(",")[0];
+    }
+    return null;
+  }, [watcher?.date]);
+
   if (watcher && !isEdit) {
     return (
       <div className={styles.container}>
-        <div>
-          {watcher.name} / {watcher.boxType} /{" "}
-          <Link
-            href={`${wbPage}${watcher.sell}`}
-            target="_blank"
-            sx={{ color: "#17c8c7" }}
-          >
-            Поставка {watcher.sell}
-          </Link>
-        </div>
-        <div>
-          <Button onClick={handleEditForm}> Редактировать</Button>
-          <Button onClick={() => onDelete(watcher.id)}>Удалить</Button>
-        </div>
+        <Paper sx={{ p: 2 }}>
+          <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+            <Box>
+              <div>
+                <Icon component={PlaceIcon} fontSize="small" /> {watcher.name}
+              </div>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                <Icon component={LocalShippingIcon} fontSize="small" />
+                {watcher.boxType}
+              </Box>
+            </Box>
+            <Box>
+              <Link
+                href={`${wbPage}${watcher.sell}`}
+                target="_blank"
+                sx={{ color: "#17c8c7" }}
+              >
+                Поставка {watcher.sell}
+              </Link>
+              <div>{date ? `c ${date}` : ""}</div>
+            </Box>
+            <div>
+              <Button onClick={handleEditForm}> Редактировать</Button>
+              <Button onClick={() => onDelete(watcher.id)}>Удалить</Button>
+            </div>
+          </Stack>
+        </Paper>
       </div>
     );
   }

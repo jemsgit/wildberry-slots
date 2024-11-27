@@ -5,7 +5,7 @@ import {
 
 function CustomToolbar() {
   return (
-    <GridToolbarContainer sx={{ padding: "6px" }}>
+    <GridToolbarContainer sx={{ padding: "10px 0" }}>
       <GridToolbarFilterButton />
     </GridToolbarContainer>
   );

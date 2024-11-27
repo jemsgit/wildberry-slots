@@ -1,9 +1,12 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+
 import "./App.css";
 import SlotsPage from "./pages/SlotsPage/SlotsPage";
 import InfoPage from "./pages/InfoPage/InfoPage";
 import MainLayout from "./components/MainLayout/MainLayout";
+import store from "./store/store";
 
 const darkTheme = createTheme({
   palette: {
@@ -58,14 +61,16 @@ export const lightTheme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={darkTheme}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<SlotsPage />} />
-            <Route path="/info" element={<InfoPage />} />
-          </Route>
-        </Routes>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<MainLayout />}>
+              <Route index element={<SlotsPage />} />
+              <Route path="/info" element={<InfoPage />} />
+            </Route>
+          </Routes>
+        </Router>
+      </Provider>
     </ThemeProvider>
   );
 }

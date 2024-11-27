@@ -1,7 +1,9 @@
 import { SlotWatcher } from "../../models/slot-watcher";
 import WatchSlot from "../WatchSlot/WatchSlot";
 import { Filter as FilterModel } from "../../models/filter";
-import { Box } from "@mui/material";
+import { Box, Link } from "@mui/material";
+import { showNewForm } from "../../store/watchersSlice";
+import { useAppDispatch } from "../../hooks/redux";
 
 interface WatcherListProps {
   watchers: SlotWatcher[];
@@ -16,9 +18,21 @@ function WatcherList({
   onSave,
   onDelete,
 }: WatcherListProps) {
+  const dispatch = useAppDispatch();
+  const handleAddNew = (e: React.MouseEvent) => {
+    e.preventDefault;
+    dispatch(showNewForm(true));
+  };
   return (
     <Box>
-      {!watchers.length && "У вас пока нет отслеживаний"}
+      {!watchers.length && (
+        <Box>
+          У вас пока нет отслеживаний.{" "}
+          <Link sx={{ cursor: "pointer" }} onClick={handleAddNew}>
+            Добавьте свое первое отслеживание
+          </Link>
+        </Box>
+      )}
       {watchers.map((watcher) => (
         <div key={watcher.id}>
           <WatchSlot

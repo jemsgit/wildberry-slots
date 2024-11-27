@@ -1,11 +1,12 @@
-import { Box, Button } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { useCallback, useState } from "react";
 import { Add } from "@mui/icons-material";
 
 import { Filter as FilterModel } from "../../models/filter";
 import { SlotWatcher } from "../../models/slot-watcher";
-import { addButtonStyles } from "../WatchSlotForm/WatchSlotForm.styles";
 import WatchSlotForm from "../WatchSlotForm/WatchSlotForm";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { showNewForm } from "../../store/watchersSlice";
 
 interface Props {
   warehousesOptions: FilterModel[];
@@ -15,10 +16,14 @@ interface Props {
 function NewWatchSlot(props: Props) {
   const { warehousesOptions, onSave } = props;
 
+  const showNew = useAppSelector((state) => state.watchers.showNew);
+  const dispatch = useAppDispatch();
+
   const handleSave = useCallback(
     (slot: SlotWatcher) => {
       setIsEdit(false);
       onSave(slot);
+      dispatch(showNewForm(false));
     },
     [onSave]
   );
@@ -28,18 +33,19 @@ function NewWatchSlot(props: Props) {
   return (
     <>
       <Box sx={{ textAlign: "left" }}>
-        <Button
-          startIcon={<Add />}
-          onClick={() => setIsEdit(true)}
-          sx={addButtonStyles}
-        />
+        <IconButton onClick={() => setIsEdit(true)}>
+          <Add />
+        </IconButton>
       </Box>
-      {isEdit && (
+      {(isEdit || showNew) && (
         <WatchSlotForm
           watcher={null}
           warehousesOptions={warehousesOptions}
           onSave={handleSave}
-          onCancelSave={() => setIsEdit(false)}
+          onCancelSave={() => {
+            setIsEdit(false);
+            dispatch(showNewForm(false));
+          }}
         />
       )}
     </>
