@@ -4,6 +4,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { ru } from "date-fns/locale/ru";
+import { dateToFormat } from "../../utils/date-utils";
 registerLocale("ru", ru);
 
 const anchorOrigin = {
@@ -28,6 +29,7 @@ const DateInput: FC<Props> = ({ locale, inputProps, onChange, value }) => {
 
   const input = (
     <TextField
+      fullWidth
       value={value ?? selectedValue}
       onChange={(e) => {
         setSelectedValue(e.target.value);
@@ -59,7 +61,7 @@ const DateInput: FC<Props> = ({ locale, inputProps, onChange, value }) => {
               minDate={new Date()}
               onSelect={(newValue) => {
                 if (newValue) {
-                  let dateFormatted = newValue.toLocaleDateString();
+                  let dateFormatted = dateToFormat(newValue);
 
                   const date = dateFormatted;
                   setSelectedValue(date);

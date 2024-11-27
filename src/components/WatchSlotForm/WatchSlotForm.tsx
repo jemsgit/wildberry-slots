@@ -18,6 +18,7 @@ import { boxTypes } from "../../constants/slots";
 import { fieldStyles } from "./WatchSlotForm.styles";
 import DateInput from "../DateInput/DateInput";
 import { dateToFormat, parseDateFromString } from "../../utils/date-utils";
+import { useDesktopMode } from "../../hooks/useDesktop";
 
 interface Props {
   warehousesOptions: FilterModel[];
@@ -32,6 +33,7 @@ const maxDelay = 100;
 
 function WatchSlotForm(props: Props) {
   const { warehousesOptions, onSave, onCancelSave, watcher } = props;
+  const isDesktop = useDesktopMode();
 
   const [formData, setFormData] = useState<{
     warehouse: { id: number; name: string } | null;
@@ -204,47 +206,54 @@ function WatchSlotForm(props: Props) {
               По этому номеру откроется ссылка на бронирование
             </FormHelperText>
           </Box>
-          <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
-            <TextField
-              onChange={(e) => handleUpdateDelay(e.target.value)}
-              value={formData.delay}
-              label="Задержка (сек)"
-              placeholder="Задержка"
-              size="small"
-              type="number"
-              slotProps={{
-                htmlInput: { min: 0, max: 100 },
-              }}
-            />
-            <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-              <FormHelperText>Необязательно</FormHelperText>
-              <Link
-                onClick={handleNoDelay}
-                fontSize={14}
-                sx={{ cursor: "pointer" }}
-              >
-                Без задержки
-              </Link>
-            </Stack>
-          </Box>
+          <Stack direction={isDesktop ? "row" : "column"} gap={3}>
+            <Box
+              sx={{ width: "100%", display: "flex", flexDirection: "column" }}
+            >
+              <TextField
+                onChange={(e) => handleUpdateDelay(e.target.value)}
+                value={formData.delay}
+                label="Задержка (сек)"
+                placeholder="Задержка"
+                size="small"
+                type="number"
+                slotProps={{
+                  htmlInput: { min: 0, max: 100 },
+                }}
+              />
+              <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+                <FormHelperText>Необязательно</FormHelperText>
+                <Link
+                  onClick={handleNoDelay}
+                  fontSize={14}
+                  sx={{ cursor: "pointer" }}
+                >
+                  Без задержки
+                </Link>
+              </Stack>
+            </Box>
 
-          <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
-            <DateInput
-              locale="ru"
-              value={formData.date}
-              onChange={(val) => {
-                handleUpdateFormData("date", val);
-              }}
-              inputProps={{
-                placeholder: "Дата от",
-                label: "Дата отслеживания",
-                size: "small",
-              }}
-            />
-            <FormHelperText>
-              От какой даты отслеживается слот. Необязательно
-            </FormHelperText>
-          </Box>
+            <Box
+              sx={{ width: "100%", display: "flex", flexDirection: "column" }}
+            >
+              <DateInput
+                locale="ru"
+                value={formData.date}
+                onChange={(val) => {
+                  console.log(val);
+                  handleUpdateFormData("date", val);
+                }}
+                inputProps={{
+                  placeholder: "Дата от",
+                  label: "Дата отслеживания",
+                  size: "small",
+                }}
+              />
+              <FormHelperText>
+                От какой даты отслеживается слот. Необязательно
+              </FormHelperText>
+            </Box>
+          </Stack>
           <Stack direction="row" gap={2}>
             <Button type="submit" variant="outlined">
               Сохранить
