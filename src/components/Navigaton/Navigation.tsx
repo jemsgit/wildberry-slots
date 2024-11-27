@@ -38,7 +38,11 @@ function Navigation() {
     <AppBar
       position="static"
       enableColorOnDark
-      sx={{ borderRadius: "10px", mb: 2 }}
+      sx={{
+        borderRadius: "10px",
+        mb: 2,
+        background: "rgba(255, 211, 105, 0.6)",
+      }}
     >
       <Toolbar variant="dense">
         <Typography
@@ -58,7 +62,11 @@ function Navigation() {
           }}
         >
           {pages.map((page) => (
-            <MenuItem key={page.link} onClick={() => navigate(page.link)}>
+            <MenuItem
+              key={page.link}
+              onClick={() => navigate(page.link)}
+              sx={{ color: "#fff" }}
+            >
               {page.title}
             </MenuItem>
           ))}
@@ -66,12 +74,12 @@ function Navigation() {
         <IconButton
           onClick={redirectTg}
           sx={{
-            background: "#ba9800",
-            width: 32, // Custom width
-            height: 32, // Custom height
+            background: "#ddb606f7",
+            width: 32,
+            height: 32,
             borderRadius: "4px",
             "&:hover": {
-              backgroundColor: "#ba9800",
+              backgroundColor: "#ddb606f7",
             },
           }}
         >

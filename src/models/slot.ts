@@ -6,6 +6,7 @@ export type Slot = {
   boxType: string;
   boxTypeId: number;
   name: string;
+  storeType: string;
   warehouseId: number;
   closed?: boolean;
   date: Date;
@@ -15,6 +16,7 @@ export type Slot = {
 
 export type SlotDTO = {
   date: string;
+  storeType: string;
   coefficient: number;
   warehouseID: number;
   warehouseName: string;

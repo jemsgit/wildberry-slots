@@ -38,8 +38,8 @@ function WatchSlot(props: Props) {
     return (
       <div className={styles.container}>
         <Paper sx={{ p: 2 }}>
-          <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-            <Box>
+          <Stack direction="row" sx={{ justifyContent: "flex-start" }}>
+            <Box sx={{ flex: "1 1 350px" }}>
               <div>
                 <Icon component={PlaceIcon} fontSize="small" /> {watcher.name}
               </div>
@@ -48,24 +48,29 @@ function WatchSlot(props: Props) {
                 {watcher.boxType}
               </Box>
             </Box>
-            <Box>
+            <Box sx={{ flex: "1 1 200px" }}>
               <Link
                 href={`${wbPage}${watcher.sell}`}
                 target="_blank"
-                sx={{ color: "#17c8c7" }}
+                sx={{
+                  color: (theme) => theme.palette.text.secondary,
+                  "&:hover": {
+                    color: (theme) => theme.palette.text.secondary,
+                  },
+                }}
               >
                 Поставка {watcher.sell}
               </Link>
               <div>{date ? `c ${date}` : ""}</div>
             </Box>
-            <div>
+            <Box sx={{ flex: "1 1 100px" }}>
               <IconButton onClick={handleEditForm}>
                 <ModeEditIcon />
               </IconButton>
               <IconButton onClick={() => onDelete(watcher.id)}>
                 <DeleteIcon />
               </IconButton>
-            </div>
+            </Box>
           </Stack>
         </Paper>
       </div>
