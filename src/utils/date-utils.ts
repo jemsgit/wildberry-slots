@@ -29,3 +29,19 @@ export function parseDateFromString(input: string, format = "DD.MM.YYYY") {
 export function dateToFormat(date: Date, outputFormat: string = "DD.MM.YYYY") {
   return dayjs(date).format(outputFormat);
 }
+
+export function getTimeDiff(inputDate: Date) {
+  const moscowOffsetMinutes = 3 * 60;
+  const localOffsetMinutes = new Date().getTimezoneOffset();
+
+  const timezoneShiftMinutes = -1 * (localOffsetMinutes + moscowOffsetMinutes);
+
+  // Get the current time in the local timezone
+  const now = dayjs();
+  const inputDateAdjusted = dayjs(inputDate).add(
+    timezoneShiftMinutes,
+    "minute"
+  );
+
+  return now.diff(inputDateAdjusted);
+}

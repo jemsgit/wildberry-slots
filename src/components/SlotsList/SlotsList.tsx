@@ -3,7 +3,7 @@ import { DataGrid, GridColDef, GridSingleSelectColDef } from "@mui/x-data-grid";
 
 import { Filter as FilterModel } from "../../models/filter";
 import { Slot as SlotModel } from "../../models/slot";
-import { msToHuman } from "../../utils/date-utils";
+import { getTimeDiff, msToHuman } from "../../utils/date-utils";
 import Slot from "../Slot/Slot";
 import CustomToolbar from "../CustomToolbar/CustomToolbar";
 import { Paper } from "@mui/material";
@@ -88,7 +88,7 @@ function SlotsList(props: SlotListProps) {
     const interval = setInterval(() => {
       const newSlots = slots.map((row) => {
         if (!row.endTime && row.startTime) {
-          const elapsedTime = msToHuman(Date.now() - row.startTime.getTime());
+          const elapsedTime = msToHuman(getTimeDiff(row.startTime));
           return { ...row, elapsedTime };
         }
         return row;
