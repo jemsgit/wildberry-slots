@@ -8,6 +8,7 @@ import Slot from "../Slot/Slot";
 import CustomToolbar from "../CustomToolbar/CustomToolbar";
 import { Paper } from "@mui/material";
 import SectionHeader from "../SectionHeader/SectionHeader";
+import { useDesktopMode } from "../../hooks/useDesktop";
 
 interface SlotListProps {
   slots: SlotModel[];
@@ -27,7 +28,7 @@ const columns: GridColDef[] = [
   {
     field: "date",
     headerName: "Дата",
-    width: 150,
+    minWidth: 150,
     flex: 1,
     hideable: false,
     type: "date",
@@ -35,20 +36,20 @@ const columns: GridColDef[] = [
   {
     field: "score",
     headerName: "Коэффициент",
-    width: 100,
+    minWidth: 100,
     hideable: false,
   },
   {
     field: "boxType",
     headerName: "Тип поставки",
-    width: 150,
+    minWidth: 150,
     flex: 1,
     hideable: false,
   },
   {
     field: "startTime",
     headerName: "Время открытия",
-    width: 150,
+    minWidth: 150,
     flex: 1,
     type: "dateTime",
     hideable: false,
@@ -56,7 +57,7 @@ const columns: GridColDef[] = [
   {
     field: "elapsedTime",
     headerName: "Период доступности",
-    width: 150,
+    minWidth: 150,
     flex: 1,
     hideable: false,
   },
@@ -65,6 +66,7 @@ const columns: GridColDef[] = [
 function SlotsList(props: SlotListProps) {
   const { slots = [], filterOptions } = props;
   const [colDef, setColDef] = useState(columns);
+  const isDesktop = useDesktopMode();
 
   useEffect(() => {
     setColDef((prev) => {
@@ -101,7 +103,7 @@ function SlotsList(props: SlotListProps) {
     <Paper
       elevation={3}
       sx={{
-        p: 3,
+        p: isDesktop ? 3 : 0.5,
         borderRadius: 3,
         border: (theme) => `1px ${theme.palette.text.secondary} solid`,
       }}
