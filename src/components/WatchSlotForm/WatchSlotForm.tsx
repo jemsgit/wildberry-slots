@@ -147,6 +147,7 @@ function WatchSlotForm(props: Props) {
     <Dialog
       open
       fullWidth
+      maxWidth="desktop"
       sx={{ padding: 2 }}
       onClose={(_, reason) => {
         if (reason === "escapeKeyDown") {
