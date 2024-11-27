@@ -41,7 +41,12 @@ function Navigation() {
       sx={{ borderRadius: "10px", mb: 2 }}
     >
       <Toolbar variant="dense">
-        <Typography variant="h6" color="inherit" component="div" sx={{ mr: 2 }}>
+        <Typography
+          variant="h6"
+          color="inherit"
+          component="div"
+          sx={{ mr: 2, flexGrow: 1.5, textAlign: "left" }}
+        >
           Angry Slots
         </Typography>
         <Box
