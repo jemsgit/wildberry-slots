@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import styles from "./Slot.module.css";
 import { GridRow, GridRowProps } from "@mui/x-data-grid";
 
+const moscowTimezoneDif = -180;
+const currentTimezoneDifMs =
+  (new Date().getTimezoneOffset() - moscowTimezoneDif) * 60 * 1000;
+
 function Slot(props: GridRowProps) {
   const {
     row: { startTime, endTime },
@@ -12,7 +16,7 @@ function Slot(props: GridRowProps) {
   useEffect(() => {
     if (startTime) {
       const start = startTime.getTime();
-      if ((Date.now() - start) / 1000 < 10) {
+      if ((Date.now() - start + currentTimezoneDifMs) / 1000 < 10) {
         setIsNew(true);
         setTimeout(() => setIsNew(false), 2000);
       }

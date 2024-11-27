@@ -16,7 +16,7 @@ export type Slot = {
 
 export type SlotDTO = {
   date: string;
-  storeType: string;
+  wh_type: string;
   coefficient: number;
   warehouseID: number;
   warehouseName: string;
