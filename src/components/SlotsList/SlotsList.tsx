@@ -9,6 +9,11 @@ import CustomToolbar from "../CustomToolbar/CustomToolbar";
 import { Paper } from "@mui/material";
 import SectionHeader from "../SectionHeader/SectionHeader";
 import { useDesktopMode } from "../../hooks/useDesktop";
+import CustomFilterHeader, {
+  typeFilters,
+} from "../CustomFilterHeader/CustomFilterHeader";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { setFilter } from "../../store/filtersSlice";
 
 interface SlotListProps {
   slots: SlotModel[];
@@ -17,6 +22,15 @@ interface SlotListProps {
 
 const columns: GridColDef[] = [
   {
+    field: "storeType",
+    headerName: "Тип склада",
+    type: "singleSelect",
+    minWidth: 150,
+    flex: 1.5,
+    hideable: false,
+    valueOptions: typeFilters,
+  },
+  {
     field: "name",
     headerName: "Склад",
     type: "singleSelect",
@@ -24,15 +38,6 @@ const columns: GridColDef[] = [
     flex: 1.5,
     hideable: false,
     valueOptions: [],
-  },
-  {
-    field: "storeType",
-    headerName: "Тип склада",
-    type: "singleSelect",
-    minWidth: 150,
-    flex: 1.5,
-    hideable: false,
-    valueOptions: ["Обычный 1", "Обычный 2", "Обычный 3", "СНГ", "СЦ", "СГТ"],
   },
   {
     field: "date",
@@ -76,6 +81,8 @@ function SlotsList(props: SlotListProps) {
   const { slots = [], filterOptions } = props;
   const [colDef, setColDef] = useState(columns);
   const isDesktop = useDesktopMode();
+  const dispatch = useAppDispatch();
+  const gridFilter = useAppSelector((state) => state.filters.filter);
 
   useEffect(() => {
     setColDef((prev) => {
@@ -118,7 +125,7 @@ function SlotsList(props: SlotListProps) {
       }}
     >
       <SectionHeader center text="Доступные слоты" />
-
+      <CustomFilterHeader />
       <DataGrid
         rows={rows}
         columns={colDef}
@@ -126,6 +133,7 @@ function SlotsList(props: SlotListProps) {
           row: Slot,
           toolbar: CustomToolbar,
         }}
+        filterModel={gridFilter}
         disableColumnSelector
         sx={{
           ".MuiDataGrid-columnHeaders > div": {
@@ -141,6 +149,9 @@ function SlotsList(props: SlotListProps) {
         getRowClassName={(params) =>
           params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
         }
+        onFilterModelChange={(newFilterModel) => {
+          dispatch(setFilter(newFilterModel));
+        }}
         localeText={{
           columnMenuSortAsc: "Сортировать по возрастанию",
           columnMenuSortDesc: "Сортировать по возрастанию",

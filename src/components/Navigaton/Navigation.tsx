@@ -25,6 +25,10 @@ const pages: PageInfo[] = [
     title: "О проекте",
     link: "/info",
   },
+  {
+    title: "Инструкция",
+    link: "/tutorial",
+  },
 ];
 
 const redirectTg = () => {
@@ -40,14 +44,15 @@ function Navigation() {
       enableColorOnDark
       sx={{
         borderRadius: "10px",
+        minHeight: "62px",
         mb: 2,
-        background: "rgba(255, 211, 105, 0.6)",
+        background: (theme) => theme.palette.background.default,
       }}
     >
-      <Toolbar variant="dense">
+      <Toolbar variant="dense" sx={{ minHeight: "62px", alignItems: "center" }}>
         <Typography
           variant="h6"
-          color="inherit"
+          color="white"
           component="div"
           sx={{ mr: 2, flexGrow: 1.5, textAlign: "left" }}
         >
@@ -59,13 +64,18 @@ function Navigation() {
             flexDirection: "row",
             display: "flex",
             alignItems: "baseline",
+            gap: 2,
           }}
         >
           {pages.map((page) => (
             <MenuItem
               key={page.link}
               onClick={() => navigate(page.link)}
-              sx={{ color: "#fff" }}
+              sx={{
+                backgroundColor: "#917808f7",
+                color: "#fff",
+                borderRadius: 2,
+              }}
             >
               {page.title}
             </MenuItem>
@@ -75,8 +85,8 @@ function Navigation() {
           onClick={redirectTg}
           sx={{
             background: "#ddb606f7",
-            width: 32,
-            height: 32,
+            width: 48,
+            height: 48,
             borderRadius: "4px",
             "&:hover": {
               backgroundColor: "#ddb606f7",

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import slotsReducer from "./slotsSlice";
 import settingsReducer from "./settingsSlice";
 import watchersReducer from "./watchersSlice";
+import filtersReducer from "./filtersSlice";
 
 import slotListenerMiddleware from "./middlewares/slotUpdate";
 
@@ -10,6 +11,7 @@ const store = configureStore({
     slots: slotsReducer,
     watchers: watchersReducer,
     settings: settingsReducer,
+    filters: filtersReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().prepend(slotListenerMiddleware.middleware),

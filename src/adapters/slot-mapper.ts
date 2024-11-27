@@ -8,7 +8,7 @@ export const slotMapper = (item: SlotDTO): Slot => ({
     "DD.MM.YYYY"
   )}`,
   name: item.warehouseName,
-  storeType: item.wh_type,
+  storeType: item.warehouseType,
   startTime: item.openedAt
     ? new Date(item.openedAt.replace("Z", "").replace("+03:00", ""))
     : undefined,

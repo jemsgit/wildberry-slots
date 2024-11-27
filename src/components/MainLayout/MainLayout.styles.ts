@@ -13,7 +13,7 @@ export const content = {
   maxWidth: "1280px",
   width: "100%",
   margin: "0 auto",
-  padding: "0 2em 2em",
+  padding: "0.5em 2em 2em",
   boxSizing: "border-box",
   textAlign: "center",
 };
@@ -22,7 +22,7 @@ export const mobileContent = {
   maxWidth: "1280px",
   width: "100%",
   margin: "0 auto",
-  padding: "0 0.5em 0.5em",
+  padding: "0.5em",
   boxSizing: "border-box",
   textAlign: "center",
 };
