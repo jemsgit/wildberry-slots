@@ -7,9 +7,11 @@ import {
   setSoundOpen,
 } from "../../store/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { useDesktopMode } from "../../hooks/useDesktop";
 
 function SettingsSection() {
   const dispatch = useAppDispatch();
+  const isDesktop = useDesktopMode();
   const { autoopenLinkOn, soundCloseOn, soundOpenOn } = useAppSelector(
     (state) => state.settings
   );
@@ -27,7 +29,14 @@ function SettingsSection() {
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 3, flex: "1 1 100px", borderRadius: 3 }}>
+    <Paper
+      elevation={3}
+      sx={{
+        p: 3,
+        flex: isDesktop ? "1 1 200px" : "1 1 100px",
+        borderRadius: 3,
+      }}
+    >
       <SectionHeader text="Настройки" />
 
       <Box>

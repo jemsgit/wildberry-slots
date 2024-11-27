@@ -8,9 +8,12 @@ import { fetchFilters, fetchSlots, filterSlots } from "../../store/slotsSlice";
 import { realTimeSlotsService } from "../../service/realtimeSlotService";
 import WatchSection from "../../components/WatchSection/WatchSection";
 import SettingsSection from "../../components/SettingsSection/SettingsSection";
+import { useDesktopMode } from "../../hooks/useDesktop";
 
 function SlotsPage() {
   const dispatch = useAppDispatch();
+
+  const isDesktop = useDesktopMode();
 
   const {
     slots,
@@ -40,7 +43,7 @@ function SlotsPage() {
   return (
     <div>
       <Stack gap={3}>
-        <Stack direction="row" gap={3}>
+        <Stack direction={isDesktop ? "row" : "column"} gap={3}>
           <WatchSection />
 
           <SettingsSection />

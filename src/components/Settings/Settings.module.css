@@ -1,8 +1,7 @@
 .container {
   text-align: left;
   display: flex;
-  flex-direction: row;
-  gap: 10px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0;
   margin-bottom: 16px;
 }

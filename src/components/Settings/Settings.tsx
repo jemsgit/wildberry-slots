@@ -1,13 +1,9 @@
-import { Chip } from "@mui/material";
-import styles from "./Settings.module.css";
+import { Box, IconButton, Stack } from "@mui/material";
 
-const chipStyle = (isOn: boolean) => {
-  return {
-    backgroundColor: isOn ? "#2b892b" : "#af0000",
-    fontSize: "16px",
-    color: "#fff",
-  };
-};
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
+import LinkIcon from "@mui/icons-material/Link";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
 
 interface Props {
   setSoundClose: (enable: boolean) => void;
@@ -29,29 +25,27 @@ function Settings(props: Props) {
   } = props;
 
   return (
-    <div className={styles.container}>
-      <Chip
-        onClick={() => setSoundClose(!soundCloseOn)}
-        color={"primary"}
-        variant={"filled"}
-        label={`Burned slots: ${soundCloseOn ? "🔉 on" : "🔇 off"}`}
-        sx={chipStyle(soundCloseOn)}
-      />
-      <Chip
-        onClick={() => setSoundOpen(!soundOpenOn)}
-        color={"primary"}
-        variant={"filled"}
-        label={`New slots: ${soundOpenOn ? "🔉 on" : "🔇 off"}`}
-        sx={chipStyle(soundOpenOn)}
-      />
-      <Chip
-        onClick={() => setAutoopenLink(!autoopenLinkOn)}
-        color={"primary"}
-        variant={"filled"}
-        label={`Link autoopen: ${autoopenLinkOn ? "on" : "off"}`}
-        sx={chipStyle(autoopenLinkOn)}
-      />
-    </div>
+    <Stack sx={{ textAlign: "left" }}>
+      <Box>
+        <IconButton onClick={() => setSoundClose(!soundCloseOn)}>
+          {soundCloseOn ? <VolumeUpIcon /> : <VolumeOffIcon />}
+        </IconButton>
+        Сгорающие слоты
+      </Box>
+      <Box>
+        <IconButton onClick={() => setSoundOpen(!soundOpenOn)}>
+          {soundOpenOn ? <VolumeUpIcon /> : <VolumeOffIcon />}
+        </IconButton>
+        Новые слоты
+      </Box>
+
+      <Box>
+        <IconButton onClick={() => setAutoopenLink(!autoopenLinkOn)}>
+          {autoopenLinkOn ? <LinkIcon /> : <LinkOffIcon />}
+        </IconButton>
+        Автооткрытие ссылок
+      </Box>
+    </Stack>
   );
 }
 

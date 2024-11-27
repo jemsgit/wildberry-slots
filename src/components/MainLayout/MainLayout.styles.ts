@@ -17,3 +17,12 @@ export const content = {
   boxSizing: "border-box",
   textAlign: "center",
 };
+
+export const mobileContent = {
+  maxWidth: "1280px",
+  width: "100%",
+  margin: "0 auto",
+  padding: "0.5em",
+  boxSizing: "border-box",
+  textAlign: "center",
+};

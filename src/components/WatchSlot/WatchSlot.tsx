@@ -1,8 +1,10 @@
-import { Box, Button, Link, Paper, Stack } from "@mui/material";
+import { Box, IconButton, Link, Paper, Stack } from "@mui/material";
 import { useMemo, useState } from "react";
 import PlaceIcon from "@mui/icons-material/Place";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import Icon from "@mui/material/Icon";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { Filter as FilterModel } from "../../models/filter";
 import { SlotWatcher } from "../../models/slot-watcher";
@@ -57,8 +59,12 @@ function WatchSlot(props: Props) {
               <div>{date ? `c ${date}` : ""}</div>
             </Box>
             <div>
-              <Button onClick={handleEditForm}> Редактировать</Button>
-              <Button onClick={() => onDelete(watcher.id)}>Удалить</Button>
+              <IconButton onClick={handleEditForm}>
+                <ModeEditIcon />
+              </IconButton>
+              <IconButton onClick={() => onDelete(watcher.id)}>
+                <DeleteIcon />
+              </IconButton>
             </div>
           </Stack>
         </Paper>

@@ -8,6 +8,18 @@ import InfoPage from "./pages/InfoPage/InfoPage";
 import MainLayout from "./components/MainLayout/MainLayout";
 import store from "./store/store";
 
+declare module "@mui/material/styles" {
+  interface BreakpointOverrides {
+    xs: false; // removes the `xs` breakpoint
+    sm: false;
+    md: false;
+    lg: false;
+    xl: false;
+    mobile: true; // adds the `mobile` breakpoint
+    desktop: true;
+  }
+}
+
 const darkTheme = createTheme({
   palette: {
     mode: "dark", // Dark theme
@@ -26,6 +38,12 @@ const darkTheme = createTheme({
     text: {
       primary: "rgb(238, 238, 238)", // Main text color
       secondary: "rgb(255, 211, 105)", // Secondary text (for highlights)
+    },
+  },
+  breakpoints: {
+    values: {
+      mobile: 0,
+      desktop: 720,
     },
   },
   typography: {
@@ -51,6 +69,12 @@ export const lightTheme = createTheme({
     text: {
       primary: "rgb(34, 40, 49)",
       secondary: "rgb(57, 62, 70)",
+    },
+  },
+  breakpoints: {
+    values: {
+      mobile: 0,
+      desktop: 720,
     },
   },
   typography: {
