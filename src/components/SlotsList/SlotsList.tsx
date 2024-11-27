@@ -117,6 +117,7 @@ function SlotsList(props: SlotListProps) {
           row: Slot,
           toolbar: CustomToolbar,
         }}
+        disableColumnSelector
         sx={{
           ".MuiDataGrid-columnHeaders > div": {
             borderRadius: "15px 15px 0 0",
