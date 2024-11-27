@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import TelegramIcon from "@mui/icons-material/Telegram";
+import { useDesktopMode } from "../../hooks/useDesktop";
 
 interface PageInfo {
   title: string;
@@ -34,6 +35,7 @@ const redirectTg = () => {
 function Navigation() {
   const navigate = useNavigate();
   const location = useLocation();
+  const isDesktop = useDesktopMode();
 
   console.log(location.pathname);
 
@@ -65,7 +67,7 @@ function Navigation() {
           endIcon={<TelegramIcon />}
           sx={{ color: (theme) => theme.palette.common.black }}
         >
-          Наш Telegram
+          {isDesktop ? "Наш Telegram" : ""}
         </Button>
       </Toolbar>
     </AppBar>
