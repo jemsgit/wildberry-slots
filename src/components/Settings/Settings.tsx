@@ -1,4 +1,4 @@
-import { Box, IconButton, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
@@ -27,23 +27,31 @@ function Settings(props: Props) {
   return (
     <Stack sx={{ textAlign: "left" }}>
       <Box>
-        <IconButton onClick={() => setSoundClose(!soundCloseOn)}>
-          {soundCloseOn ? <VolumeUpIcon /> : <VolumeOffIcon />}
-        </IconButton>
-        Сгорающие слоты
+        <Button
+          onClick={() => setSoundClose(!soundCloseOn)}
+          startIcon={soundCloseOn ? <VolumeUpIcon /> : <VolumeOffIcon />}
+          sx={{ color: (theme) => theme.palette.text.primary }}
+        >
+          Сгорающие слоты
+        </Button>
       </Box>
       <Box>
-        <IconButton onClick={() => setSoundOpen(!soundOpenOn)}>
-          {soundOpenOn ? <VolumeUpIcon /> : <VolumeOffIcon />}
-        </IconButton>
-        Новые слоты
+        <Button
+          onClick={() => setSoundOpen(!soundOpenOn)}
+          startIcon={soundOpenOn ? <VolumeUpIcon /> : <VolumeOffIcon />}
+          sx={{ color: (theme) => theme.palette.text.primary }}
+        >
+          Новые слоты
+        </Button>
       </Box>
-
       <Box>
-        <IconButton onClick={() => setAutoopenLink(!autoopenLinkOn)}>
-          {autoopenLinkOn ? <LinkIcon /> : <LinkOffIcon />}
-        </IconButton>
-        Автооткрытие ссылок
+        <Button
+          onClick={() => setAutoopenLink(!autoopenLinkOn)}
+          startIcon={autoopenLinkOn ? <LinkIcon /> : <LinkOffIcon />}
+          sx={{ color: (theme) => theme.palette.text.primary }}
+        >
+          Автооткрытие ссылок
+        </Button>
       </Box>
     </Stack>
   );

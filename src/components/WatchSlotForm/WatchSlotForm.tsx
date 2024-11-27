@@ -10,6 +10,8 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 import { FormEvent, useEffect, useState } from "react";
 
 import { Filter as FilterModel } from "../../models/filter";
@@ -60,6 +62,10 @@ function WatchSlotForm(props: Props) {
       delay: String(defaultDelay),
       date: undefined,
     });
+  };
+
+  const handleClose = () => {
+    handleCancelSeve();
   };
 
   const handleUpdateFormData = (field: string, value: unknown) => {
@@ -160,6 +166,18 @@ function WatchSlotForm(props: Props) {
       <DialogTitle>
         {watcher ? "Изменение отслеживания" : "Добавление отслеживания"}
       </DialogTitle>
+      <IconButton
+        aria-label="close"
+        onClick={handleClose}
+        sx={(theme) => ({
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: theme.palette.grey[500],
+        })}
+      >
+        <CloseIcon />
+      </IconButton>
       <form onSubmit={handleFormSubmit} style={{ padding: "16px" }}>
         <Stack gap={2}>
           <FormControl sx={fieldStyles}>

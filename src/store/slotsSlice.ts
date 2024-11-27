@@ -42,7 +42,6 @@ const slotsSlice = createSlice({
     },
     filterSlots(state) {
       const filteredSlots = state.slots.filter((slot: Slot) => {
-        console.log(slot.startTime);
         return !slot.closed && slot.startTime;
       });
       state.visibleSlots = filteredSlots;

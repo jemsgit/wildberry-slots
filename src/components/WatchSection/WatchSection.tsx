@@ -45,7 +45,7 @@ function WatchSection() {
             onSave={handleSaveWatcher}
           />
         </Stack>
-        <Box sx={{ pt: 3, textAlign: "left" }}>
+        <Box sx={{ textAlign: "left" }}>
           <WatcherList
             watchers={slotWatchers}
             warehousesOptions={availableOptions}

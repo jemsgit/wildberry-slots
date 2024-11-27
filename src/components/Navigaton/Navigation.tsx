@@ -1,12 +1,20 @@
-import { AppBar, Link, MenuItem, Toolbar, Typography } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
-
-interface Props {}
+import {
+  AppBar,
+  Box,
+  Button,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import TelegramIcon from "@mui/icons-material/Telegram";
 
 interface PageInfo {
   title: string;
   link: string;
 }
+
+const tgLink = "https://t.me/AngrySlots";
 
 const pages: PageInfo[] = [
   {
@@ -19,8 +27,15 @@ const pages: PageInfo[] = [
   },
 ];
 
-function Navigation(props: Props) {
-  const {} = props;
+const redirectTg = () => {
+  window.open(tgLink, "_blank");
+};
+
+function Navigation() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(location.pathname);
 
   return (
     <AppBar position="static" enableColorOnDark>
@@ -28,21 +43,30 @@ function Navigation(props: Props) {
         <Typography variant="h6" color="inherit" component="div" sx={{ mr: 2 }}>
           Angry Slots
         </Typography>
-        {pages.map((page) => (
-          <MenuItem key={page.link}>
-            <Link
-              component={RouterLink}
-              to={page.link}
+        <Box sx={{ flexGrow: 1, flexDirection: "row", display: "flex" }}>
+          {pages.map((page) => (
+            <MenuItem
+              key={page.link}
               sx={{
-                marginRight: 2,
-                color: (theme) => theme.palette.common.black,
-                textDecoration: "none",
+                "&.Mui-selected": {
+                  backgroundColor: (theme) => theme.palette.primary.dark,
+                },
+                borderRadius: "5px",
               }}
+              onClick={() => navigate(page.link)}
+              selected={location.pathname === page.link}
             >
               {page.title}
-            </Link>
-          </MenuItem>
-        ))}
+            </MenuItem>
+          ))}
+        </Box>
+        <Button
+          onClick={redirectTg}
+          endIcon={<TelegramIcon />}
+          sx={{ color: (theme) => theme.palette.common.black }}
+        >
+          Наш Telegram
+        </Button>
       </Toolbar>
     </AppBar>
   );
