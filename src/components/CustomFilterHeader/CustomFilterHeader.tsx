@@ -14,9 +14,9 @@ import HelpIcon from "@mui/icons-material/Help";
 import { useState } from "react";
 
 export const typeFilters = [
-  "Обычный 1",
-  "Обычный 2",
-  "Обычный 3",
+  "Приоритет 1",
+  "Приоритет 2",
+  "Приоритет 3",
   "СНГ",
   "СЦ",
   "СГТ",
@@ -87,7 +87,10 @@ const CustomFilterHeader = () => {
             label={value}
             clickable
             color={
-              isAnyOf && isTypeField && selectedFilter.value.includes(value)
+              isAnyOf &&
+              isTypeField &&
+              Array.isArray(selectedFilter.value) &&
+              selectedFilter.value.includes(value)
                 ? "primary"
                 : "default"
             }

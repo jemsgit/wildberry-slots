@@ -44,12 +44,12 @@ function Navigation() {
       enableColorOnDark
       sx={{
         borderRadius: "10px",
-        minHeight: "62px",
+        minHeight: "82px",
         mb: 2,
         background: (theme) => theme.palette.background.default,
       }}
     >
-      <Toolbar variant="dense" sx={{ minHeight: "62px", alignItems: "center" }}>
+      <Toolbar variant="dense" sx={{ minHeight: "82px", alignItems: "center" }}>
         <Typography
           variant="h6"
           color="white"
@@ -72,7 +72,7 @@ function Navigation() {
               key={page.link}
               onClick={() => navigate(page.link)}
               sx={{
-                backgroundColor: "#917808f7",
+                backgroundColor: (theme) => theme.palette.common.black,
                 color: "#fff",
                 borderRadius: 2,
               }}

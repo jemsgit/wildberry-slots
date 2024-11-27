@@ -158,7 +158,7 @@ function SlotsList(props: SlotListProps) {
           filterPanelColumns: "Колонка",
           filterPanelOperator: "Оператор",
           filterPanelInputLabel: "Значение",
-          filterPanelInputPlaceholder: "Занчение",
+          filterPanelInputPlaceholder: "Значение",
           columnMenuFilter: "Фильтровать",
           toolbarFiltersLabel: "Фильтровать",
           toolbarFilters: "Фильтровать",
