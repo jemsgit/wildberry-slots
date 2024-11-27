@@ -45,7 +45,14 @@ function Navigation() {
         <Typography variant="h6" color="inherit" component="div" sx={{ mr: 2 }}>
           Angry Slots
         </Typography>
-        <Box sx={{ flexGrow: 1, flexDirection: "row", display: "flex" }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            flexDirection: "row",
+            display: "flex",
+            alignItems: "baseline",
+          }}
+        >
           {pages.map((page) => (
             <MenuItem
               key={page.link}
@@ -54,6 +61,8 @@ function Navigation() {
                   backgroundColor: (theme) => theme.palette.primary.dark,
                 },
                 borderRadius: "5px",
+                minHeight: "32px",
+                maxHeight: "32px",
               }}
               onClick={() => navigate(page.link)}
               selected={location.pathname === page.link}
