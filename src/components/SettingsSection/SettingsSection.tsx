@@ -37,7 +37,7 @@ function SettingsSection() {
         borderRadius: 3,
       }}
     >
-      <SectionHeader text="Настройки" />
+      <SectionHeader text="Настройки уведомлений" />
 
       <Box>
         <Settings

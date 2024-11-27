@@ -4,6 +4,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import LinkIcon from "@mui/icons-material/Link";
 import LinkOffIcon from "@mui/icons-material/LinkOff";
+import { buttonStyles } from "./Settings.styles";
 
 interface Props {
   setSoundClose: (enable: boolean) => void;
@@ -30,7 +31,7 @@ function Settings(props: Props) {
         <Button
           onClick={() => setSoundClose(!soundCloseOn)}
           startIcon={soundCloseOn ? <VolumeUpIcon /> : <VolumeOffIcon />}
-          sx={{ color: (theme) => theme.palette.text.primary }}
+          sx={buttonStyles(soundCloseOn)}
         >
           Сгорающие слоты
         </Button>
@@ -39,7 +40,7 @@ function Settings(props: Props) {
         <Button
           onClick={() => setSoundOpen(!soundOpenOn)}
           startIcon={soundOpenOn ? <VolumeUpIcon /> : <VolumeOffIcon />}
-          sx={{ color: (theme) => theme.palette.text.primary }}
+          sx={buttonStyles(soundOpenOn)}
         >
           Новые слоты
         </Button>
@@ -48,7 +49,7 @@ function Settings(props: Props) {
         <Button
           onClick={() => setAutoopenLink(!autoopenLinkOn)}
           startIcon={autoopenLinkOn ? <LinkIcon /> : <LinkOffIcon />}
-          sx={{ color: (theme) => theme.palette.text.primary }}
+          sx={buttonStyles(autoopenLinkOn)}
         >
           Автооткрытие ссылок
         </Button>

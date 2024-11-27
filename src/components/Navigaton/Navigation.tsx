@@ -1,14 +1,13 @@
 import {
   AppBar,
   Box,
-  Button,
+  IconButton,
   MenuItem,
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import { useDesktopMode } from "../../hooks/useDesktop";
 
 interface PageInfo {
   title: string;
@@ -34,13 +33,13 @@ const redirectTg = () => {
 
 function Navigation() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const isDesktop = useDesktopMode();
-
-  console.log(location.pathname);
 
   return (
-    <AppBar position="static" enableColorOnDark>
+    <AppBar
+      position="static"
+      enableColorOnDark
+      sx={{ borderRadius: "10px", mb: 2 }}
+    >
       <Toolbar variant="dense">
         <Typography variant="h6" color="inherit" component="div" sx={{ mr: 2 }}>
           Angry Slots
@@ -54,30 +53,25 @@ function Navigation() {
           }}
         >
           {pages.map((page) => (
-            <MenuItem
-              key={page.link}
-              sx={{
-                "&.Mui-selected": {
-                  backgroundColor: (theme) => theme.palette.primary.dark,
-                },
-                borderRadius: "5px",
-                minHeight: "32px",
-                maxHeight: "32px",
-              }}
-              onClick={() => navigate(page.link)}
-              selected={location.pathname === page.link}
-            >
+            <MenuItem key={page.link} onClick={() => navigate(page.link)}>
               {page.title}
             </MenuItem>
           ))}
         </Box>
-        <Button
+        <IconButton
           onClick={redirectTg}
-          endIcon={<TelegramIcon />}
-          sx={{ color: (theme) => theme.palette.common.black }}
+          sx={{
+            background: "#ba9800",
+            width: 32, // Custom width
+            height: 32, // Custom height
+            borderRadius: "4px",
+            "&:hover": {
+              backgroundColor: "#ba9800",
+            },
+          }}
         >
-          {isDesktop ? "Наш Telegram" : ""}
-        </Button>
+          <TelegramIcon />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

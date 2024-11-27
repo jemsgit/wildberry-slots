@@ -26,12 +26,22 @@ function WatcherList({
   return (
     <Box>
       {!watchers.length && (
-        <Box>
-          У вас пока нет отслеживаний.{" "}
-          <Link sx={{ cursor: "pointer" }} onClick={handleAddNew}>
-            Добавьте свое первое отслеживание
-          </Link>
-        </Box>
+        <>
+          <Box>У вас пока нет отслеживаний.</Box>
+          <Box>
+            <Link
+              sx={{
+                cursor: "pointer",
+                "&:hover": {
+                  color: (theme) => theme.palette.text.primary,
+                },
+              }}
+              onClick={handleAddNew}
+            >
+              Добавьте свое первое отслеживание
+            </Link>
+          </Box>
+        </>
       )}
       {watchers.map((watcher) => (
         <div key={watcher.id}>

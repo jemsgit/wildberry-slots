@@ -119,9 +119,18 @@ function SlotsList(props: SlotListProps) {
         }}
         sx={{
           ".MuiDataGrid-columnHeaders > div": {
-            borderRadius: "15px",
+            borderRadius: "15px 15px 0 0",
+          },
+          "& .MuiDataGrid-row.odd": {
+            backgroundColor: (theme) => theme.palette.background.paper,
+          },
+          "& .MuiDataGrid-row.even": {
+            backgroundColor: (theme) => theme.palette.background.default,
           },
         }}
+        getRowClassName={(params) =>
+          params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+        }
         localeText={{
           columnMenuSortAsc: "Сортировать по возрастанию",
           columnMenuSortDesc: "Сортировать по возрастанию",

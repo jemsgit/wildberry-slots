@@ -7,6 +7,8 @@ dayjs.extend(utc);
 dayjs.extend(customParseFormat);
 dayjs.extend(timezone);
 
+const moscowOffsetMinutes = -3 * 60;
+
 export function msToHuman(ms: number) {
   // 1- Convert to seconds:
   let seconds = ms / 1000;
@@ -31,14 +33,11 @@ export function dateToFormat(date: Date, outputFormat: string = "DD.MM.YYYY") {
 }
 
 export function getTimeDiff(inputDate: Date) {
-  const moscowOffsetMinutes = 3 * 60;
-  const localOffsetMinutes = new Date().getTimezoneOffset();
-
-  const timezoneShiftMinutes = -1 * (localOffsetMinutes + moscowOffsetMinutes);
-
+  const timezoneShiftMinutes =
+    new Date().getTimezoneOffset() - moscowOffsetMinutes;
   // Get the current time in the local timezone
   const now = dayjs();
-  const inputDateAdjusted = dayjs(inputDate).add(
+  const inputDateAdjusted = dayjs(inputDate).subtract(
     timezoneShiftMinutes,
     "minute"
   );

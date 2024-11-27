@@ -10,8 +10,8 @@ function MainLayout() {
   return (
     <Box sx={cointainer}>
       <Box sx={{ backgroundColor: (theme) => theme.palette.background.paper }}>
-        <Navigation />
         <Box sx={isDesktop ? content : mobileContent}>
+          <Navigation />
           <Outlet />
           <Footer />
         </Box>
