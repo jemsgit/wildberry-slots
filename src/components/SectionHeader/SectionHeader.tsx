@@ -10,7 +10,7 @@ function SectionHeader(props: Props) {
 
   return (
     <Typography
-      variant="h5"
+      variant="h6"
       sx={{
         color: (theme) => theme.palette.text.secondary,
         textAlign: center ? "center" : "left",

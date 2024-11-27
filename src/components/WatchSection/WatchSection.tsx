@@ -32,7 +32,7 @@ function WatchSection() {
     <Paper
       elevation={3}
       sx={{
-        p: 3,
+        p: 2,
         flex: "3 1 auto",
         borderRadius: 3,
       }}

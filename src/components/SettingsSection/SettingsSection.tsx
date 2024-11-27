@@ -32,7 +32,7 @@ function SettingsSection() {
     <Paper
       elevation={3}
       sx={{
-        p: 3,
+        p: 2,
         flex: isDesktop ? "1 1 200px" : "1 1 100px",
         borderRadius: 3,
       }}
