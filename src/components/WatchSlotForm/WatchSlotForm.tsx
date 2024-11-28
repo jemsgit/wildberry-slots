@@ -312,6 +312,7 @@ function WatchSlotForm(props: Props) {
               },
             }}
             href={tgLink}
+            target="_blank"
           >
             канал в Telegram
           </Link>
