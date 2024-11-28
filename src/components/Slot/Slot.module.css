@@ -20,6 +20,7 @@
 .container.containerDeleting,
 .container.new {
   transform: scale(1);
+  z-index: 100;
 }
 
 .container.new::before {
@@ -35,6 +36,13 @@
 .container.new::before {
   transform: scaleX(1);
   transform-origin: bottom left;
+}
+
+.container.containerDeleting :global(.MuiDataGrid-row.even),
+.container.containerDeleting :global(.MuiDataGrid-row.odd),
+.container.new :global(.MuiDataGrid-row.odd),
+.container.new :global(.MuiDataGrid-row.even) {
+  background-color: transparent;
 }
 
 .container::before {

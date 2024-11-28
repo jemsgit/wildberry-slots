@@ -69,18 +69,18 @@ wss.on("connection", (ws) => {
 
 // Функция для случайного изменения данных
 function updateSlots() {
-  const shouldAddNew = true; // С 30% вероятностью добавляем новый элемент
+  const shouldAddNew = false; // С 30% вероятностью добавляем новый элемент
 
   if (shouldAddNew) {
     // Добавляем новый элемент
     const newSlot = {
-      date: "2024-12-05T00:00:00Z",
-      coefficient: -1,
+      date: new Date().toISOString(),
+      coefficient: 2,
       warehouseID: 218732,
       warehouseName: "СЦ Ош",
       boxTypeName: "QR-поставка с коробами",
       boxTypeID: 0,
-      openedAt: "2024-11-19T00:00:21.675385Z",
+      openedAt: "2024-11-28T10:43:17.194Z",
     };
     slots.push(newSlot);
     broadcast({ type: "update", data: newSlot });
