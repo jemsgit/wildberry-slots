@@ -7,6 +7,7 @@ import SlotsPage from "./pages/SlotsPage/SlotsPage";
 import InfoPage from "./pages/InfoPage/InfoPage";
 import MainLayout from "./components/MainLayout/MainLayout";
 import store from "./store/store";
+import NotFoundPage from "./pages/404/404";
 
 declare module "@mui/material/styles" {
   interface BreakpointOverrides {
@@ -90,7 +91,9 @@ function App() {
           <Routes>
             <Route path="/" element={<MainLayout />}>
               <Route index element={<SlotsPage />} />
-              <Route path="/info" element={<InfoPage />} />
+              <Route path="info" element={<InfoPage />} />
+              <Route path="tutorial" element={<InfoPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </Router>

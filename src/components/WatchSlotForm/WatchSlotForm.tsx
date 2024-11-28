@@ -272,7 +272,6 @@ function WatchSlotForm(props: Props) {
                 locale="ru"
                 value={formData.date}
                 onChange={(val) => {
-                  console.log(val);
                   handleUpdateFormData("date", val);
                 }}
                 inputProps={{

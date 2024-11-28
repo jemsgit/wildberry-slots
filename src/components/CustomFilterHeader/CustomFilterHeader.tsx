@@ -38,7 +38,6 @@ const CustomFilterHeader = () => {
   const [open, setOpen] = useState(false);
 
   const handleTooltipClose = () => {
-    console.log("ter");
     setOpen(false);
   };
 

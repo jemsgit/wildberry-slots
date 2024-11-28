@@ -110,8 +110,7 @@ function SlotsList(props: SlotListProps) {
         return row;
       });
       setRows(newSlots);
-    }, 100);
-
+    }, 200);
     return () => clearInterval(interval);
   }, [slots]);
 
@@ -179,6 +178,8 @@ function SlotsList(props: SlotListProps) {
           filterOperatorIsEmpty: "пусто",
           filterOperatorIsNotEmpty: "не пусто",
           filterOperatorIsAnyOf: "любой из",
+          noRowsLabel: "Нет данных",
+          noResultsOverlayLabel: "По выбранным фильтрам ничего не найдено",
         }}
       />
     </Paper>
