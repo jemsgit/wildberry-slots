@@ -179,7 +179,8 @@ function SlotsList(props: SlotListProps) {
           filterOperatorIsNotEmpty: "не пусто",
           filterOperatorIsAnyOf: "любой из",
           noRowsLabel: "Нет данных",
-          noResultsOverlayLabel: "По выбранным фильтрам ничего не найдено",
+          noResultsOverlayLabel:
+            "В данный момент нет доступных складов по выбранным фильтрам",
         }}
       />
     </Paper>
