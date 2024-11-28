@@ -13,14 +13,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import HelpIcon from "@mui/icons-material/Help";
 import { useState } from "react";
 
-export const typeFilters = [
-  "Приоритет 1",
-  "Приоритет 2",
-  "Приоритет 3",
-  "СНГ",
-  "СЦ",
-  "СГТ",
-];
+export const typeFilters = ["Обычный", "СНГ", "СЦ", "СГТ"];
 
 const CustomFilterHeader = () => {
   const dispatch = useAppDispatch();
