@@ -2,12 +2,18 @@ import {
   AppBar,
   Box,
   IconButton,
+  Menu,
   MenuItem,
   Toolbar,
   Typography,
 } from "@mui/material";
+
+import MenuIcon from "@mui/icons-material/Menu";
+
 import { useNavigate } from "react-router-dom";
 import TelegramIcon from "@mui/icons-material/Telegram";
+import { useDesktopMode } from "../../hooks/useDesktop";
+import React, { useState } from "react";
 
 interface PageInfo {
   title: string;
@@ -36,7 +42,17 @@ const redirectTg = () => {
 };
 
 function Navigation() {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const navigate = useNavigate();
+  const isDesktop = useDesktopMode();
+
+  const handleMenuOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <AppBar
@@ -54,7 +70,11 @@ function Navigation() {
           variant="h6"
           color="white"
           component="div"
-          sx={{ mr: 2, flexGrow: 1.5, textAlign: "left" }}
+          sx={{
+            mr: isDesktop ? 2 : 0.5,
+            flexGrow: isDesktop ? 1.5 : 0.2,
+            textAlign: "left",
+          }}
         >
           Angry Slots
         </Typography>
@@ -67,19 +87,59 @@ function Navigation() {
             gap: 2,
           }}
         >
-          {pages.map((page) => (
-            <MenuItem
-              key={page.link}
-              onClick={() => navigate(page.link)}
-              sx={{
-                backgroundColor: (theme) => theme.palette.common.black,
-                color: "#fff",
-                borderRadius: 2,
-              }}
-            >
-              {page.title}
-            </MenuItem>
-          ))}
+          {!isDesktop ? (
+            <>
+              <IconButton
+                edge="start"
+                color="secondary"
+                aria-label="menu"
+                sx={{
+                  backgroundColor: (theme) => theme.palette.common.black,
+                  color: "#fff",
+                }}
+                onClick={handleMenuOpen}
+              >
+                <MenuIcon
+                  fontSize="medium"
+                  sx={{
+                    color: "#fff",
+                  }}
+                />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                {pages.map((page) => (
+                  <MenuItem
+                    onClick={() => {
+                      navigate(page.link);
+                      handleMenuClose();
+                    }}
+                  >
+                    {page.title}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </>
+          ) : (
+            <>
+              {pages.map((page) => (
+                <MenuItem
+                  key={page.link}
+                  onClick={() => navigate(page.link)}
+                  sx={{
+                    backgroundColor: (theme) => theme.palette.common.black,
+                    color: "#fff",
+                    borderRadius: 2,
+                  }}
+                >
+                  {page.title}
+                </MenuItem>
+              ))}
+            </>
+          )}
         </Box>
         <IconButton
           onClick={redirectTg}

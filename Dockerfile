@@ -1,5 +1,5 @@
 # Step 1: Use a lightweight Node.js image to build the app
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 # Set working directory
 WORKDIR /app
