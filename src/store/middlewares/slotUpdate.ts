@@ -6,6 +6,7 @@ import { RootState } from "../store";
 import sound from "../../sounds/fire.mp3";
 
 const audio = new Audio(sound);
+audio.volume = 0.4;
 const slotListenerMiddleware = createListenerMiddleware();
 
 slotListenerMiddleware.startListening({
